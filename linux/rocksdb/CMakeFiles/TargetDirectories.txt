@@ -1,0 +1,16 @@
+/home/daniel/new/linux/rocksdb/CMakeFiles/install.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/list_install_components.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/rebuild_cache.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/edit_cache.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/rocksdb.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/install/strip.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/install/local.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/rocksdb-shared.dir
+/home/daniel/new/linux/rocksdb/CMakeFiles/build_version.dir
+/home/daniel/new/linux/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeFiles/install/strip.dir
+/home/daniel/new/linux/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeFiles/install/local.dir
+/home/daniel/new/linux/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeFiles/install.dir
+/home/daniel/new/linux/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeFiles/list_install_components.dir
+/home/daniel/new/linux/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeFiles/edit_cache.dir
+/home/daniel/new/linux/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeFiles/rebuild_cache.dir
+/home/daniel/new/linux/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeFiles/gtest.dir
