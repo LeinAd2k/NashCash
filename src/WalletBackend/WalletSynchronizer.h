@@ -8,12 +8,46 @@
 
 #include <Nigel/Nigel.h>
 
+#include <SubWallets/SubWallets.h>
+
+#include <Utilities/ThreadSafeDeque.h>
+#include <Utilities/ThreadSafePriorityQueue.h>
+
+#include <WalletBackend/BlockDownloader.h>
 #include <WalletBackend/EventHandler.h>
-#include <WalletBackend/ThreadSafeQueue.h>
-#include <WalletBackend/SubWallets.h>
 #include <WalletBackend/SynchronizationStatus.h>
 
 #include <WalletTypes.h>
+
+typedef std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> BlockInputsAndOwners;
+typedef std::tuple<WalletTypes::WalletBlockInfo, BlockInputsAndOwners, uint32_t> SemiProcessedBlock;
+
+/* Used to store the data we have accumulating when scanning a specific
+   block. We can't add the items directly, because we may stop midway
+   through. If so, we need to not add anything. */
+struct BlockScanTmpInfo
+{
+    /* Transactions that belong to us */
+    std::vector<WalletTypes::Transaction> transactionsToAdd;
+
+    /* The corresponding inputs to the transactions, indexed by public key
+       (i.e., the corresponding subwallet to add the input to) */
+    BlockInputsAndOwners inputsToAdd;
+
+    /* Need to mark these as spent so we don't include them later */
+    std::vector<std::tuple<Crypto::PublicKey, Crypto::KeyImage>> keyImagesToMarkSpent;
+};
+
+class OrderByArrivalIndex
+{
+    public:
+        /* Ordering based on the arrival index of the blocks, not on the block
+           height. This is needed to ensure correct handling of network forks. */
+        bool operator() (SemiProcessedBlock a, SemiProcessedBlock b)
+        {
+            return std::get<2>(a) > std::get<2>(b);
+        }
+};
 
 class WalletSynchronizer
 {
@@ -31,7 +65,8 @@ class WalletSynchronizer
             const uint64_t startTimestamp,
             const uint64_t startHeight,
             const Crypto::SecretKey privateViewKey,
-            const std::shared_ptr<EventHandler> eventHandler);
+            const std::shared_ptr<EventHandler> eventHandler,
+            unsigned int threadCount);
 
         /* Delete the copy constructor */
         WalletSynchronizer(const WalletSynchronizer &) = delete;
@@ -56,13 +91,16 @@ class WalletSynchronizer
 
         void stop();
 
-        json toJson() const;
+        /* Converts the class to a json object */
+        void toJSON(rapidjson::Writer<rapidjson::StringBuffer> &writer) const;
 
-        void fromJson(const json &j);
+        /* Initializes the class from a json string */
+        void fromJSON(const JSONObject &j);
 
         void initializeAfterLoad(
             const std::shared_ptr<Nigel> daemon,
-            const std::shared_ptr<EventHandler> eventHandler);
+            const std::shared_ptr<EventHandler> eventHandler,
+            unsigned int threadCount);
 
         void reset(uint64_t startHeight);
 
@@ -70,95 +108,60 @@ class WalletSynchronizer
 
         void swapNode(const std::shared_ptr<Nigel> daemon);
 
-        /////////////////////////////
-        /* Public member variables */
-        /////////////////////////////
+        void setSyncStart(const uint64_t startTimestamp, const uint64_t startHeight);
 
-        /* The sub wallets (shared with the main class) */
-        std::shared_ptr<SubWallets> m_subWallets;
-
+        void setSubWallets(const std::shared_ptr<SubWallets> subWallets);
+        
     private:
 
         //////////////////////////////
         /* Private member functions */
         //////////////////////////////
 
-        void monitorLockedTransactions();
+        void mainLoop();
 
-        void downloadBlocks();
+        void blockProcessingThread();
 
-        void findTransactionsInBlocks();
+        std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> processBlockOutputs(
+            const WalletTypes::WalletBlockInfo &block) const;
 
-        /* Remove transactions from this height and above, they occured
-           on a forked chain */
-        void removeForkedTransactions(uint64_t forkHeight);
+        void completeBlockProcessing(
+            const WalletTypes::WalletBlockInfo &block,
+            const std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> &ourInputs);
 
-        /* Process the transaction inputs to find transactions which we spent */
-        uint64_t processTransactionInputs(
-            const std::vector<CryptoNote::KeyInput> keyInputs,
-            std::unordered_map<Crypto::PublicKey, int64_t> &transfers,
-            const uint64_t blockHeight);
+        BlockScanTmpInfo processBlockTransactions(
+            const WalletTypes::WalletBlockInfo &block,
+            const std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> &inputs) const;
 
-        /* Process the transaction outputs to find incoming transactions */
-        std::tuple<bool, uint64_t> processTransactionOutputs(
-            const WalletTypes::RawCoinbaseTransaction &tx,
-            std::unordered_map<Crypto::PublicKey, int64_t> &transfers,
-            const uint64_t blockHeight);
+        std::optional<WalletTypes::Transaction> processCoinbaseTransaction(
+            const WalletTypes::WalletBlockInfo &block,
+            const std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> &inputs) const;
 
-        /* Process a coinbase transaction to see if it belongs to us */
-        void processCoinbaseTransaction(
-            const WalletTypes::RawCoinbaseTransaction rawTX,
-            const uint64_t blockTimestamp,
-            const uint64_t blockHeight);
+        std::tuple<std::optional<WalletTypes::Transaction>, std::vector<std::tuple<Crypto::PublicKey, Crypto::KeyImage>>> processTransaction(
+            const WalletTypes::WalletBlockInfo &block,
+            const std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> &inputs,
+            const WalletTypes::RawTransaction &tx) const;
 
-        /* Process a transaction to see if it belongs to us */
-        void processTransaction(
-            const WalletTypes::RawTransaction rawTX,
-            const uint64_t blockTimestamp,
-            const uint64_t blockHeight);
+        std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> processTransactionOutputs(
+            const WalletTypes::RawCoinbaseTransaction &rawTX,
+            const uint64_t blockHeight) const;
 
-        std::vector<uint64_t> getGlobalIndexes(
-            const uint64_t blockHeight,
-            const Crypto::Hash transactionHash);
+        std::unordered_map<Crypto::Hash, std::vector<uint64_t>> getGlobalIndexes(
+            const uint64_t blockHeight) const;
+
+        void removeForkedTransactions(const uint64_t forkHeight);
+
+        void checkLockedTransactions();
 
         //////////////////////////////
         /* Private member variables */
         //////////////////////////////
 
         /* The thread ID of the block downloader thread */
-        std::thread m_blockDownloaderThread;
-
-        /* The thread ID of the transaction synchronizer thread */
-        std::thread m_transactionSynchronizerThread;
-
-        /* The thread ID of the pool watcher thread */
-        std::thread m_poolWatcherThread;
+        std::thread m_syncThread;
 
         /* An atomic bool to signal if we should stop the sync thread */
         std::atomic<bool> m_shouldStop;
-
-        /* We have two threads, the block downloader thread (the producer),
-           which grabs blocks from a daemon, and pushes them into the work
-           queue, and the transaction syncher thread, which takes blocks from
-           the work queue, and searches for transactions belonging to the
-           user.
-           
-           We need to store the status that they are both at, since we need
-           both to provide the last known block hashes to the node, to get
-           the next newest blocks, and we need to be able to resume the sync
-           progress from where we have decrypted transactions from, rather
-           than simply where we have downloaded blocks to.
-           
-           If we stored the block download status, if the queue was not empty
-           when closing the program, we could miss transactions which had
-           been downloaded, but not processed. */
-        SynchronizationStatus m_blockDownloaderStatus;
-
-        SynchronizationStatus m_transactionSynchronizerStatus;
-
-        /* Blocks to be processed are added to the front, and are removed
-           from the back */
-        ThreadSafeQueue<WalletTypes::WalletBlockInfo> m_blockProcessingQueue;
 
         /* The timestamp to start scanning downloading block data from */
         uint64_t m_startTimestamp;
@@ -175,7 +178,33 @@ class WalletSynchronizer
         /* The daemon connection */
         std::shared_ptr<Nigel> m_daemon;
 
-        /* Have we launched the pool watcher thread yet (we launched it when
-           synced) */
-        bool m_hasPoolWatcherThreadLaunched = false;
+        BlockDownloader m_blockDownloader;
+
+        /* The sub wallets (shared with the main class) */
+        std::shared_ptr<SubWallets> m_subWallets;
+
+        /* Stores blocks for processing by processing threads */
+        ThreadSafeDeque<std::tuple<WalletTypes::WalletBlockInfo, uint32_t>> m_blockProcessingQueue;
+
+        /* Synchronizes the child threads waiting for blocks to process
+           and the parent pushing blocks in */
+        std::condition_variable m_haveBlocksToProcess;
+
+        /* Synchronizes the child threads pushing blocks into the priority
+           queue and the parent thread waiting for them all to arrive */
+        std::condition_variable m_haveProcessedBlocksToHandle;
+
+        std::mutex m_mutex;
+
+        /* yeah.... that's a thread safe queue, which holds a block, and it's
+           corresponding inputs, and the subwallet public key that each input
+           belongs to. The blocks which arrived earlier come at the front of
+           the queue. */
+        ThreadSafePriorityQueue<SemiProcessedBlock, OrderByArrivalIndex> m_processedBlocks;
+
+        /* Amount of sync threads to run */
+        unsigned int m_threadCount;
+
+        /* Stores thread ids of the block output processing threads */
+        std::vector<std::thread> m_syncThreads;
 };

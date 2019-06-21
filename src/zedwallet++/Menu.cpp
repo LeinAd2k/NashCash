@@ -1,4 +1,4 @@
-// Copyright (c) 2018, The TurtleCoin Developers
+// Copyright (c) 2018-2019, The TurtleCoin Developers
 // 
 // Please see the included LICENSE file for more information.
 
@@ -6,15 +6,15 @@
 #include <zedwallet++/Menu.h>
 /////////////////////////////
 
-#include <Common/FormatTools.h>
-
 #include <config/WalletConfig.h>
+
+#include <Utilities/FormatTools.h>
 
 #include <zedwallet++/CommandDispatcher.h>
 #include <zedwallet++/Commands.h>
 #include <zedwallet++/GetInput.h>
 
-std::tuple<bool, bool, std::shared_ptr<WalletBackend>> selectionScreen(const Config &config)
+std::tuple<bool, bool, std::shared_ptr<WalletBackend>> selectionScreen(const ZedConfig &config)
 {
     while (true)
     {
@@ -60,7 +60,7 @@ std::tuple<bool, bool, std::shared_ptr<WalletBackend>> selectionScreen(const Con
             feemsg << "You have connected to a node that charges "
                       "a fee to send transactions.\n\n"
                       "The fee for sending transactions is: "
-                   << Common::formatAmount(feeAmount)
+                   << Utilities::formatAmount(feeAmount)
                    << " per transaction.\n\n"
                       "If you don't want to pay the node fee, please "
                       "relaunch "
@@ -148,11 +148,11 @@ bool checkNodeStatus(const std::shared_ptr<WalletBackend> walletBackend)
         /* User wants to try a different node */
         else if (command == "swap_node")
         {
-            const auto [host, port] = getDaemonAddress();
+            const auto [host, port, ssl] = getDaemonAddress();
 
             std::cout << InformationMsg("\nSwapping node, this may take some time...\n");
 
-            walletBackend->swapNode(host, port);
+            walletBackend->swapNode(host, port, ssl);
 
             std::cout << SuccessMsg("Node swap complete.\n\n");
 
@@ -163,7 +163,7 @@ bool checkNodeStatus(const std::shared_ptr<WalletBackend> walletBackend)
     return true;
 }
 
-std::string getAction(const Config &config)
+std::string getAction(const ZedConfig &config)
 {
     if (config.walletGiven || config.passGiven)
     {

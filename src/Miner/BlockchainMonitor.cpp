@@ -14,7 +14,7 @@
 #include "Rpc/CoreRpcServerCommandsDefinitions.h"
 #include "Rpc/JsonRpc.h"
 
-#include <zedwallet++/ColouredMsg.h>
+#include <Utilities/ColouredMsg.h>
 
 using json = nlohmann::json;
 
@@ -59,7 +59,7 @@ void BlockchainMonitor::waitBlockchainUpdate()
             nextBlockHash = requestLastBlockHash();
         }
 
-        if (lastBlockHash.value() != nextBlockHash.value())
+        if (*lastBlockHash != *nextBlockHash)
         {
             break;
         }

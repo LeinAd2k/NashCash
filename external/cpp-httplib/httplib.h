@@ -2,7 +2,7 @@
 //  httplib.h
 //
 //  Copyright (c) 2017 Yuji Hirose. All rights reserved.
-//  Copyright (c) 2018 The TurtleCoin Developers. All rights reserved.
+//  Copyright (c) 2018-2019 The TurtleCoin Developers. All rights reserved.
 //  MIT License
 //
 
@@ -373,7 +373,7 @@ class SSLClient : public Client {
 public:
     SSLClient(
         const char* host,
-        int port = 80,
+        int port = 443,
         time_t timeout_sec = 300);
 
     virtual ~SSLClient();
@@ -607,10 +607,6 @@ socket_t create_socket(const char* host, int port, Fn fn, int socket_flags = 0)
        if (sock == INVALID_SOCKET) {
           continue;
        }
-
-       // Make 'reuse address' option available
-       int yes = 1;
-       setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char*)&yes, sizeof(yes));
 
        // bind or connect
        if (fn(sock, *rp)) {
@@ -919,23 +915,24 @@ inline bool read_content_chunked(Stream& strm, std::string& out)
 template <typename T>
 bool read_content(Stream& strm, T& x, Progress progress = Progress())
 {
-    if (has_header(x.headers, "Content-Length")) {
-        auto len = get_header_value_int(x.headers, "Content-Length", 0);
-        if (len == 0) {
-            const auto& encoding = get_header_value(x.headers, "Transfer-Encoding", "");
-            if (!strcasecmp(encoding, "chunked")) {
-                return read_content_chunked(strm, x.body);
-            }
-        }
-        return read_content_with_length(strm, x.body, len, progress);
-    } else {
+    uint64_t bodyLen = 0;
+
+    if (has_header(x.headers, "Content-Length"))
+    {
+        bodyLen = get_header_value_int(x.headers, "Content-Length", 0);
+    }
+
+    if (bodyLen == 0)
+    {
         const auto& encoding = get_header_value(x.headers, "Transfer-Encoding", "");
-        if (!strcasecmp(encoding, "chunked")) {
+
+        if (!strcasecmp(encoding, "chunked"))
+        {
             return read_content_chunked(strm, x.body);
         }
-        return read_content_without_length(strm, x.body);
     }
-    return true;
+
+    return read_content_with_length(strm, x.body, bodyLen, progress);
 }
 
 template <typename T>

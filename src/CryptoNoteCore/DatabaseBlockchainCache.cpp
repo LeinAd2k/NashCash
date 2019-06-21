@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero Project
-// Copyright (c) 2018, The TurtleCoin Developers
-// 
+// Copyright (c) 2018-2019, The TurtleCoin Developers
+//
 // Please see the included LICENSE file for more information.
 
 #include <CryptoNoteCore/DatabaseBlockchainCache.h>
@@ -18,16 +18,17 @@
 #include "crypto/hash.h"
 
 #include <CryptoNoteCore/BlockchainStorage.h>
-#include <CryptoNoteCore/CryptoNoteTools.h>
 #include <CryptoNoteCore/CryptoNoteBasicImpl.h>
-#include "CryptoNoteCore/TransactionExtra.h"
+
+#include <Common/TransactionExtra.h>
+#include <Common/CryptoNoteTools.h>
 
 namespace CryptoNote {
 
 namespace {
 
 const uint32_t ONE_DAY_SECONDS = 60 * 60 * 24;
-const CachedBlockInfo NULL_CACHED_BLOCK_INFO {NULL_HASH, 0, 0, 0, 0, 0};
+const CachedBlockInfo NULL_CACHED_BLOCK_INFO {Constants::NULL_HASH, 0, 0, 0, 0, 0};
 
 bool requestPackedOutputs(IBlockchainCache::Amount amount, Common::ArrayView<uint32_t> globalIndexes, IDataBase& database, std::vector<PackedOutIndex>& result) {
   BlockchainReadBatch readBatch;
@@ -959,11 +960,22 @@ bool DatabaseBlockchainCache::isTransactionSpendTimeUnlocked(uint64_t unlockTime
   return isTransactionSpendTimeUnlocked(unlockTime, getTopBlockIndex());
 }
 
-// TODO: pass time
 bool DatabaseBlockchainCache::isTransactionSpendTimeUnlocked(uint64_t unlockTime, uint32_t blockIndex) const {
   if (unlockTime < currency.maxBlockHeight()) {
     // interpret as block index
     return blockIndex + currency.lockedTxAllowedDeltaBlocks() >= unlockTime;
+  }
+
+  if (blockIndex >= CryptoNote::parameters::TRANSACTION_INPUT_BLOCKTIME_VALIDATION_HEIGHT)
+  {
+    /* Get the last block timestamp from an existing method call */
+    const std::vector<uint64_t> lastBlockTimestamps = getLastTimestamps(1);
+
+    /* Pop the last timestamp off the vector */
+    const uint64_t lastBlockTimestamp = lastBlockTimestamps.at(0);
+
+    /* Compare our delta seconds plus our last time stamp against the unlock time */
+    return lastBlockTimestamp + currency.lockedTxAllowedDeltaSeconds() >= unlockTime;
   }
 
   // interpret as time
@@ -1041,6 +1053,8 @@ uint8_t DatabaseBlockchainCache::getBlockMajorVersionForHeight(uint32_t height) 
   UpgradeManager upgradeManager;
   upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_2, currency.upgradeHeight(BLOCK_MAJOR_VERSION_2));
   upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_3, currency.upgradeHeight(BLOCK_MAJOR_VERSION_3));
+  upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_4, currency.upgradeHeight(BLOCK_MAJOR_VERSION_4));
+  upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_5, currency.upgradeHeight(BLOCK_MAJOR_VERSION_5));
   return upgradeManager.getBlockMajorVersion(height);
 }
 
@@ -1510,7 +1524,7 @@ std::vector<uint32_t> DatabaseBlockchainCache::getRandomOutsByAmount(uint64_t am
   std::vector<uint32_t> resultOuts;
   resultOuts.reserve(outputsToPick);
 
-  ShuffleGenerator<uint32_t, Crypto::random_engine<uint32_t>> generator(outputsCount[amount]);
+  ShuffleGenerator<uint32_t> generator(outputsCount[amount]);
 
   while (outputsToPick) {
     std::vector<uint32_t> globalIndexes;
@@ -1630,6 +1644,46 @@ std::vector<Crypto::Hash> DatabaseBlockchainCache::getBlockHashesByTimestamps(ui
   return blockHashes;
 }
 
+std::vector<RawBlock> DatabaseBlockchainCache::getNonEmptyBlocks(
+    const uint64_t startHeight,
+    const size_t blockCount) const
+{
+    std::vector<RawBlock> orderedBlocks;
+
+    const uint32_t storageBlockCount = getBlockCount();
+
+    uint64_t height = startHeight;
+
+    while (orderedBlocks.size() < blockCount && height < storageBlockCount)
+    {
+        uint64_t startHeight = height;
+
+        /* Lets try taking the amount we need *2, to try and balance not needing
+           multiple DB requests to get the amount we need of non empty blocks, with
+           not taking too many */
+        uint64_t endHeight = startHeight + (blockCount * 2);
+
+        auto blockBatch = BlockchainReadBatch().requestRawBlocks(startHeight, endHeight);
+        const auto rawBlocks = readDatabase(blockBatch).getRawBlocks();
+
+        while (orderedBlocks.size() < blockCount && height < startHeight + rawBlocks.size())
+        {
+            const auto block = rawBlocks.at(height);
+            
+            height++;
+
+            if (block.transactions.empty())
+            {
+                continue;
+            }
+
+            orderedBlocks.push_back(block);
+        }
+    }
+
+    return orderedBlocks;
+}
+
 std::vector<RawBlock> DatabaseBlockchainCache::getBlocksByHeight(
     const uint64_t startHeight, uint64_t endHeight) const
 {
@@ -1637,7 +1691,7 @@ std::vector<RawBlock> DatabaseBlockchainCache::getBlocksByHeight(
 
     /* Get the info from the DB */
     auto rawBlocks = readDatabase(blockBatch).getRawBlocks();
-    
+
     std::vector<RawBlock> orderedBlocks;
 
     /* Order, and convert from map, to vector */
@@ -1649,7 +1703,7 @@ std::vector<RawBlock> DatabaseBlockchainCache::getBlocksByHeight(
     return orderedBlocks;
 }
 
-std::unordered_map<Crypto::Hash, std::vector<uint64_t>> DatabaseBlockchainCache::getGlobalIndexes( 
+std::unordered_map<Crypto::Hash, std::vector<uint64_t>> DatabaseBlockchainCache::getGlobalIndexes(
     const std::vector<Crypto::Hash> transactionHashes) const
 {
     auto txBatch = BlockchainReadBatch().requestCachedTransactions(transactionHashes);

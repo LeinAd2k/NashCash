@@ -1,12 +1,12 @@
-// Copyright (c) 2018, The NashCash Developers
-//
+// Copyright (c) 2018, The TurtleCoin Developers
+// Copyright (c) 2019, The NashCash Developers
 // Please see the included LICENSE file for more information.
 
 #pragma once
 
 #include <sstream>
 #include <config/CryptoNoteConfig.h>
-#include <config/Ascii.h>
+//#include <config/Ascii.h>
 #include <version.h>
 
 namespace CryptoNote
@@ -15,7 +15,7 @@ namespace CryptoNote
   {
     std::stringstream programHeader;
     programHeader << std::endl
-      << asciiArt << std::endl
+      //<< asciiArt << std::endl
       << " " << CryptoNote::CRYPTONOTE_NAME << " v" << PROJECT_VERSION_LONG << std::endl
       << " This software is distributed under the General Public License v3.0"
       << std::endl << std::endl

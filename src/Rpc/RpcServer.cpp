@@ -10,14 +10,15 @@
 
 #include <cmath>
 
-#include <Common/FormatTools.h>
 #include <Common/StringTools.h>
 
 #include <config/CryptoNoteConfig.h>
 
 #include <CryptoNoteCore/Core.h>
-#include <CryptoNoteCore/CryptoNoteTools.h>
-#include <CryptoNoteCore/TransactionExtra.h>
+#include <CryptoNoteCore/CryptoNoteFormatUtils.h>
+
+#include <Common/CryptoNoteTools.h>
+#include <Common/TransactionExtra.h>
 
 #include <CryptoNoteProtocol/CryptoNoteProtocolHandlerCommon.h>
 
@@ -31,6 +32,8 @@
 #include "version.h"
 
 #include <unordered_map>
+
+#include <Utilities/FormatTools.h>
 
 #undef ERROR
 
@@ -66,7 +69,11 @@ void serialize(BlockShortInfo& blockShortInfo, ISerializer& s) {
 
 void serialize(WalletTypes::WalletBlockInfo &walletBlockInfo, ISerializer &s)
 {
-    s(walletBlockInfo.coinbaseTransaction, "coinbaseTX");
+    if (walletBlockInfo.coinbaseTransaction)
+    {
+        s(*(walletBlockInfo.coinbaseTransaction), "coinbaseTX");
+    }
+
     s(walletBlockInfo.transactions, "transactions");
     s(walletBlockInfo.blockHeight, "blockHeight");
     s(walletBlockInfo.blockHash, "blockHash");
@@ -95,6 +102,12 @@ void serialize(WalletTypes::KeyOutput &keyOutput, ISerializer &s)
 {
     s(keyOutput.key, "key");
     s(keyOutput.amount, "amount");
+}
+
+void serialize(WalletTypes::TopBlock &topBlock, ISerializer &s)
+{
+    s(topBlock.hash, "hash");
+    s(topBlock.height, "height");
 }
 
 namespace {
@@ -347,12 +360,23 @@ bool RpcServer::on_query_blocks_detailed(const COMMAND_RPC_QUERY_BLOCKS_DETAILED
 
 bool RpcServer::on_get_wallet_sync_data(const COMMAND_RPC_GET_WALLET_SYNC_DATA::request &req, COMMAND_RPC_GET_WALLET_SYNC_DATA::response &res)
 {
-    if (!m_core.getWalletSyncData(req.blockIds, req.startHeight, req.startTimestamp, res.items))
+    const bool success = m_core.getWalletSyncData(
+        req.blockIds,
+        req.startHeight,
+        req.startTimestamp,
+        req.blockCount,
+        req.skipCoinbaseTransactions,
+        res.items,
+        res.topBlock
+    );
+
+    if (!success)
     {
         res.status = "Failed to perform query";
         return false;
     }
 
+    res.synced = res.items.empty();
     res.status = CORE_RPC_STATUS_OK;
 
     return true;
@@ -414,7 +438,7 @@ bool RpcServer::on_get_random_outs(const COMMAND_RPC_GET_RANDOM_OUTPUTS_FOR_AMOU
     if (globalIndexes.size() != req.outs_count)
     {
         logger(ERROR) << "Failed to get enough matching outputs for amount "
-                      << amount << " (" << Common::formatAmount(amount)
+                      << amount << " (" << Utilities::formatAmount(amount)
                       << "). Requested outputs: " << req.outs_count
                       << ", found outputs: " << globalIndexes.size()
                       << ". Further explanation here: https://gist.github.com/zpalmtree/80b3e80463225bcfb8f8432043cb594c"
@@ -986,7 +1010,7 @@ bool RpcServer::on_getblockhash(const COMMAND_RPC_GETBLOCKHASH::request& req, CO
 
   uint32_t h = static_cast<uint32_t>(req[0]);
   Crypto::Hash blockId = m_core.getBlockHashByIndex(h - 1);
-  if (blockId == NULL_HASH) {
+  if (blockId == Constants::NULL_HASH) {
     throw JsonRpc::JsonRpcError{
       CORE_RPC_ERROR_CODE_TOO_BIG_HEIGHT,
       std::string("Too big height: ") + std::to_string(h) + ", current blockchain height = " + std::to_string(m_core.getTopBlockIndex() + 1)
@@ -1036,7 +1060,7 @@ bool RpcServer::on_getblocktemplate(const COMMAND_RPC_GETBLOCKTEMPLATE::request&
 
   BinaryArray block_blob = toBinaryArray(blockTemplate);
   PublicKey tx_pub_key = CryptoNote::getTransactionPublicKeyFromExtra(blockTemplate.baseTransaction.extra);
-  if (tx_pub_key == NULL_PUBLIC_KEY) {
+  if (tx_pub_key == Constants::NULL_PUBLIC_KEY) {
     logger(ERROR) << "Failed to find tx pub key in coinbase extra";
     throw JsonRpc::JsonRpcError{ CORE_RPC_ERROR_CODE_INTERNAL_ERROR, "Internal error: failed to find tx pub key in coinbase extra" };
   }

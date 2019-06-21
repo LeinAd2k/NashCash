@@ -10,6 +10,8 @@
 
 #include "json.hpp"
 
+#include "JsonHelper.h"
+
 #include <vector>
 
 using nlohmann::json;
@@ -28,9 +30,15 @@ class SynchronizationStatus
 
         std::vector<Crypto::Hash> getBlockHashCheckpoints() const;
 
-        json toJson() const;
+        std::deque<Crypto::Hash> getBlockCheckpoints() const;
 
-        void fromJson(const json &j);
+        std::deque<Crypto::Hash> getRecentBlockHashes() const;
+
+        /* Converts the class to a json object */
+        void toJSON(rapidjson::Writer<rapidjson::StringBuffer> &writer) const;
+
+        /* Initializes the class from a json string */
+        void fromJSON(const JSONObject &j);
 
         uint64_t getHeight() const;
 
@@ -53,4 +61,8 @@ class SynchronizationStatus
 
         /* The last block height we are aware of */
         uint64_t m_lastKnownBlockHeight = 0;
+        
+        /* The last height we saved a block checkpoint at. Can't do every 5k
+           since we skip blocks with coinbase tx scanning of. */
+        uint64_t m_lastSavedCheckpointAt = 0;
 };

@@ -1,5 +1,5 @@
-// Copyright (c) 2018, The NashCash Developers
-// 
+// Copyright (c) 2018, The TurtleCoin Developers
+// Copyright (c) 2019, The NashCash Developers
 // Please see the included LICENSE file for more information.
 
 #pragma once
@@ -13,7 +13,7 @@ namespace WalletConfig
     const std::string_view addressPrefix = "NaCa";
 
     /* Your coins 'Ticker', e.g. Monero = XMR, Bitcoin = BTC */
-    const std::string ticker = "NaCa";
+    const std::string ticker = "NACA";
 
     /* The filename to output the CSV to in save_csv */
     const std::string csvFilename = "transactions.csv";
@@ -26,17 +26,17 @@ namespace WalletConfig
     const std::string daemonName = "NashCashd";
 
     /* The name to call this wallet */
-    const std::string walletName = "zedwallet";
+    const std::string walletName = "wallet-cli";
 
     /* The name of service/walletd, the programmatic rpc interface to a
        wallet */
-    const std::string walletdName = "´NaCa-service";
+    const std::string walletdName = "nash-service";
 
     /* The full name of your crypto */
     const std::string coinName = std::string(CryptoNote::CRYPTONOTE_NAME);
 
     /* Where can your users contact you for support? E.g. discord */
-    const std::string contactLink = "http://nashcash.net";
+    const std::string contactLink = "https://discord.gg/7RQUaWf";
 
 
     /* The number of decimals your coin has */
@@ -72,4 +72,20 @@ namespace WalletConfig
        zero is allowed */
     const uint64_t mixinZeroDisabledHeight
         = CryptoNote::parameters::MIXIN_LIMITS_V2_HEIGHT;
+
+    /**
+     * Max size of a post body response - 10MB
+     * Will decrease the amount of blocks requested from the daemon if this
+     * is exceeded.
+     * Note - blockStoreMemoryLimit - maxBodyResponseSize should be greater
+     * than zero, or no data will get cached.
+     * Further note: Currently blocks request are not decreased if this is
+     * exceeded. Needs to be implemented in future?
+     */
+    const size_t maxBodyResponseSize = 1024 * 1024 * 10;
+
+    /**
+     * The amount of memory to use storing downloaded blocks - 50MB
+     */
+    const size_t blockStoreMemoryLimit = 1024 * 1024 * 50;
 }

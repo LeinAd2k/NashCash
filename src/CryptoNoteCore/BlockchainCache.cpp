@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero Project
-// Copyright (c) 2018, The TurtleCoin Developers
-// 
+// Copyright (c) 2018-2019, The TurtleCoin Developers
+//
 // Please see the included LICENSE file for more information.
 
 #include "BlockchainCache.h"
@@ -16,12 +16,13 @@
 #include "Common/ShuffleGenerator.h"
 
 #include "CryptoNoteCore/CryptoNoteBasicImpl.h"
-#include "CryptoNoteCore/CryptoNoteSerialization.h"
-#include "CryptoNoteCore/CryptoNoteTools.h"
+#include "Common/CryptoNoteTools.h"
 #include "CryptoNoteCore/BlockchainStorage.h"
-#include "CryptoNoteCore/TransactionExtra.h"
+#include "Common/TransactionExtra.h"
 
+#include "Serialization/CryptoNoteSerialization.h"
 #include "Serialization/SerializationOverloads.h"
+
 #include "TransactionValidatiorState.h"
 
 namespace CryptoNote {
@@ -594,6 +595,45 @@ size_t BlockchainCache::getTransactionCount() const {
   return count;
 }
 
+std::vector<RawBlock> BlockchainCache::getNonEmptyBlocks(
+    const uint64_t startHeight,
+    const size_t blockCount) const
+{
+    std::vector<RawBlock> blocks;
+
+    if (startHeight < startIndex)
+    {
+        blocks = parent->getNonEmptyBlocks(startHeight, blockCount);
+
+        if (blocks.size() == blockCount)
+        {
+            return blocks;
+        }
+    }
+
+    uint64_t startOffset = std::max(startHeight, static_cast<uint64_t>(startIndex));
+
+    uint64_t storageBlockCount = storage->getBlockCount();
+
+    uint64_t i = startOffset;
+
+    while (blocks.size() < blockCount && i < startIndex + storageBlockCount)
+    {
+        auto block = storage->getBlockByIndex(i - startIndex);
+
+        i++;
+
+        if (block.transactions.empty())
+        {
+            continue;
+        }
+
+        blocks.push_back(block);
+    }
+
+    return blocks;
+}
+
 std::vector<RawBlock> BlockchainCache::getBlocksByHeight(
     const uint64_t startHeight, uint64_t endHeight) const
 {
@@ -606,13 +646,13 @@ std::vector<RawBlock> BlockchainCache::getBlocksByHeight(
 
     if (startHeight < startIndex)
     {
-        blocks = parent->getBlocksByHeight(startHeight, startIndex - 1);
+        blocks = parent->getBlocksByHeight(startHeight, startIndex);
     }
 
     uint64_t startOffset = std::max(startHeight, static_cast<uint64_t>(startIndex));
 
     uint64_t blockCount = storage->getBlockCount();
-
+    
     /* Make sure we don't overflow the storage (for example, the block might
        not exist yet) */
     if (endHeight > startIndex + blockCount)
@@ -624,6 +664,18 @@ std::vector<RawBlock> BlockchainCache::getBlocksByHeight(
     {
         blocks.push_back(storage->getBlockByIndex(i - startIndex));
     }
+
+    logger(Logging::DEBUGGING)
+            << "\n\n"
+            << "\n============================================="
+            << "\n======= GetBlockByHeight (in memory) ========"
+            << "\n* Start height: " << startHeight
+            << "\n* End height: " << endHeight
+            << "\n* Start index: " << startIndex 
+            << "\n* Start offset: " << startIndex 
+            << "\n* Block count: " << startIndex 
+            << "\n============================================="
+            << "\n\n\n";
 
     return blocks;
 }
@@ -797,6 +849,18 @@ bool BlockchainCache::isTransactionSpendTimeUnlocked(uint64_t unlockTime, uint32
     return blockIndex + currency.lockedTxAllowedDeltaBlocks() >= unlockTime;
   }
 
+  if (blockIndex >= CryptoNote::parameters::TRANSACTION_INPUT_BLOCKTIME_VALIDATION_HEIGHT)
+  {
+    /* Get the last block timestamp from an existing method call */
+    const std::vector<uint64_t> lastBlockTimestamps = getLastTimestamps(1);
+
+    /* Pop the last timestamp off the vector */
+    const uint64_t lastBlockTimestamp = lastBlockTimestamps.at(0);
+
+    /* Compare our delta seconds plus our last time stamp against the unlock time */
+    return lastBlockTimestamp + currency.lockedTxAllowedDeltaSeconds() >= unlockTime;
+  }
+
   // interpret as time
   return static_cast<uint64_t>(time(nullptr)) + currency.lockedTxAllowedDeltaSeconds() >= unlockTime;
 }
@@ -842,7 +906,7 @@ std::vector<uint32_t> BlockchainCache::getRandomOutsByAmount(Amount amount, size
     /* We only need count outputs, so trim to that amount */
     dist = std::min(static_cast<uint32_t>(count), dist);
 
-    ShuffleGenerator<uint32_t, Crypto::random_engine<uint32_t>> generator(dist);
+    ShuffleGenerator<uint32_t> generator(dist);
 
     /* While we still have outputs to get */
     while (dist--)
@@ -939,9 +1003,9 @@ ExtractOutputKeysResult BlockchainCache::extractKeyOutputs(
                                  << " because global index is greater than the last available: " << (startGlobalIndex + outputs.size());
       return ExtractOutputKeysResult::INVALID_GLOBAL_INDEX;
     }
-    
+
     auto outputIndex = outputs[globalIndex - startGlobalIndex];
-    
+
     assert(outputIndex.blockIndex >= startIndex);
     assert(outputIndex.blockIndex <= blockIndex);
 
@@ -1158,6 +1222,8 @@ uint8_t BlockchainCache::getBlockMajorVersionForHeight(uint32_t height) const {
   UpgradeManager upgradeManager;
   upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_2, currency.upgradeHeight(BLOCK_MAJOR_VERSION_2));
   upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_3, currency.upgradeHeight(BLOCK_MAJOR_VERSION_3));
+  upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_4, currency.upgradeHeight(BLOCK_MAJOR_VERSION_4));
+  upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_5, currency.upgradeHeight(BLOCK_MAJOR_VERSION_5));
   return upgradeManager.getBlockMajorVersion(height);
 }
 

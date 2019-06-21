@@ -1,5 +1,5 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
-// Copyright (c) 2018, The TurtleCoin Developers
+// Copyright (c) 2018-2019, The TurtleCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -66,7 +66,10 @@ public:
     const std::vector<Crypto::Hash> &knownBlockHashes,
     const uint64_t startHeight,
     const uint64_t startTimestamp,
-    std::vector<WalletTypes::WalletBlockInfo> &walletBlocks) const override;
+    const uint64_t blockCount,
+    const bool skipCoinbaseTransactions,
+    std::vector<WalletTypes::WalletBlockInfo> &walletBlocks,
+    std::optional<WalletTypes::TopBlock> &topBlockInfo) const override;
 
   virtual bool getTransactionsStatus(
     std::unordered_set<Crypto::Hash> transactionHashes,
@@ -75,6 +78,7 @@ public:
     std::unordered_set<Crypto::Hash> &transactionsUnknown) const override;
 
   virtual bool hasTransaction(const Crypto::Hash& transactionHash) const override;
+  virtual std::optional<BinaryArray> getTransaction(const Crypto::Hash& transactionHash) const override;
   virtual void getTransactions(const std::vector<Crypto::Hash>& transactionHashes, std::vector<BinaryArray>& transactions, std::vector<Crypto::Hash>& missedHashes) const override;
 
   virtual uint64_t getBlockDifficulty(uint32_t blockIndex) const override;
@@ -190,7 +194,19 @@ private:
 
   uint8_t getBlockMajorVersionForHeight(uint32_t height) const;
   size_t calculateCumulativeBlocksizeLimit(uint32_t height) const;
-  void fillBlockTemplate(BlockTemplate& block, size_t medianSize, size_t maxCumulativeSize, size_t& transactionsSize, uint64_t& fee) const;
+
+  bool validateBlockTemplateTransaction(
+    const CachedTransaction &cachedTransaction,
+    const uint64_t blockHeight) const;
+
+  void fillBlockTemplate(
+    BlockTemplate& block,
+    const size_t medianSize,
+    const size_t maxCumulativeSize,
+    const uint64_t height,
+    size_t& transactionsSize,
+    uint64_t& fee) const;
+
   void deleteAlternativeChains();
   void deleteLeaf(size_t leafIndex);
   void mergeMainChainSegments();

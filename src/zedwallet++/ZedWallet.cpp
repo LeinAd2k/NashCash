@@ -8,7 +8,7 @@
 
 #include <config/CliHeader.h>
 
-#include <zedwallet++/ColouredMsg.h>
+#include <Utilities/ColouredMsg.h>
 #include <zedwallet++/Menu.h>
 #include <zedwallet++/ParseArguments.h>
 #include <zedwallet++/Sync.h>
@@ -77,7 +77,9 @@ void cleanup(
 
 int main(int argc, char **argv)
 {
-    Config config = parseArguments(argc, argv);
+    ZedConfig config = parseArguments(argc, argv);
+
+    Logger::logger.setLogLevel(config.logLevel);
 
     std::cout << InformationMsg(CryptoNote::getProjectCLIHeader()) << std::endl;
 
