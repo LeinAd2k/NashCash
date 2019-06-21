@@ -21,7 +21,7 @@
 
 #include <Utilities/FormatTools.h>
 
-#include <config/Ascii.h>
+//#include <config/Ascii.h>
 #include <config/CryptoNoteConfig.h>
 #include <config/WalletConfig.h>
 
@@ -279,15 +279,16 @@ bool CryptoNoteProtocolHandler::process_payload_sync_data(const CORE_SYNC_DATA& 
         ss << "(" << Utilities::get_sync_percentage(currentHeight, remoteHeight)
           << "% complete) ";
 
-        ss << "You are " << diff << " blocks (" << days << " days) behind ";
+     logger(INFO, CYAN)     /*ss*/ << "You are " << diff << " blocks (" << days << " days) behind " << ENDL ;
     }
     /* We're ahead of the remote node, no need to print percentages */
     else
     {
-        ss << "You are " << std::abs(diff) << " blocks (" << days << " days) ahead ";
+    logger(INFO, CYAN)    /*ss*/ << "You are " << std::abs(diff) << " blocks (" << days << " days) ahead " << ENDL ;
     }
 
-    ss << "the current peer you're connected to. Slow and steady wins the race! ";
+    logger(INFO, CYAN)    /*ss*/ << "the current peer you're connected to. At some point we're done syncronizing." << ENDL ;
+    logger(INFO, CYAN)    /*ss*/ << "In the meantime, you can have a tea :o) " << ENDL ;
 
     auto logLevel = Logging::TRACE;
     /* Log at different levels depending upon if we're ahead, behind, and if it's
@@ -303,7 +304,7 @@ bool CryptoNoteProtocolHandler::process_payload_sync_data(const CORE_SYNC_DATA& 
             logLevel = Logging::DEBUGGING;
         }
     }
-    logger(logLevel, Logging::BRIGHT_GREEN) << context << ss.str();
+    logger(logLevel, Logging::BLUE) << context << ss.str(); //finding the right
 
     logger(Logging::DEBUGGING) << "Remote top block height: " << hshd.current_height << ", id: " << hshd.top_id;
     //let the socket to send response to handshake, but request callback, to let send request data after response
@@ -541,7 +542,7 @@ int CryptoNoteProtocolHandler::handle_response_get_objects(int command, NOTIFY_R
     }
   }
 
-  logger(DEBUGGING, BRIGHT_GREEN) << "Local blockchain updated, new index = " << m_core.getTopBlockIndex();
+  logger(DEBUGGING, GREEN) << "Local blockchain updated, new index = " << m_core.getTopBlockIndex();
   if (!m_stop && context.m_state == CryptoNoteConnectionContext::state_synchronizing) {
     request_missing_objects(context, true);
   }
@@ -760,7 +761,7 @@ bool CryptoNoteProtocolHandler::request_missing_objects(CryptoNoteConnectionCont
     requestMissingPoolTransactions(context);
 
     context.m_state = CryptoNoteConnectionContext::state_normal;
-    logger(Logging::INFO, Logging::BRIGHT_GREEN) << context << "Successfully synchronized with the "
+    logger(Logging::INFO, Logging::YELLOW) << context << "Successfully synchronized with the "
                                                  << CryptoNote::CRYPTONOTE_NAME << " Network.";
     on_connection_synchronized();
   }
@@ -772,14 +773,14 @@ bool CryptoNoteProtocolHandler::on_connection_synchronized() {
   if (m_synchronized.compare_exchange_strong(val_expected, true)) {
     logger(Logging::INFO)
       << ENDL ;
-      logger(INFO, BRIGHT_MAGENTA) << "===[ " + std::string(CryptoNote::CRYPTONOTE_NAME) + " Tip! ]=============================" << ENDL ;
-      logger(INFO, WHITE) << " Always exit " + WalletConfig::daemonName + " and " + WalletConfig::walletName + " with the \"exit\" command to preserve your chain and wallet data." << ENDL ;
-      logger(INFO, WHITE) << " Use the \"help\" command to see a list of available commands." << ENDL ;
-      logger(INFO, WHITE) << " Use the \"backup\" command in " + WalletConfig::walletName + " to display your keys/seed for restoring a corrupted wallet." << ENDL ;
-      logger(INFO, WHITE) << " If you need more assistance, you can contact us for support at " + WalletConfig::contactLink << ENDL;
-      logger(INFO, BRIGHT_MAGENTA) << "===================================================" << ENDL << ENDL ;
+      logger(INFO, BRIGHT_CYAN) << "===[ " + std::string(CryptoNote::CRYPTONOTE_NAME) + " Tip! ]=============================" << ENDL ;
+      logger(INFO, CYAN) << " Always exit " + WalletConfig::daemonName + " and " + WalletConfig::walletName + " with the \"exit\" command to preserve your chain and wallet data." << ENDL ;
+      logger(INFO, CYAN) << " Use the \"help\" command to see a list of available commands." << ENDL ;
+      logger(INFO, CYAN) << " Use the \"backup\" command in " + WalletConfig::walletName + " to display your keys/seed for restoring a corrupted wallet." << ENDL ;
+      logger(INFO, CYAN) << " If you need more assistance, you can contact us for support at " + WalletConfig::contactLink << ENDL;
+      logger(INFO, BRIGHT_CYAN) << "===================================================" << ENDL << ENDL ;
 
-      logger(INFO, BRIGHT_GREEN) << asciiArt << ENDL;
+      //logger(INFO, BRIGHT_GREEN) << asciiArt << ENDL;
 
     m_observerManager.notify(&ICryptoNoteProtocolObserver::blockchainSynchronized, m_core.getTopBlockIndex());
   }
@@ -980,7 +981,7 @@ void CryptoNoteProtocolHandler::updateObservedHeight(uint32_t peerHeight, const 
     std::lock_guard<std::mutex> lock(m_blockchainHeightMutex);
     if (peerHeight > m_blockchainHeight) {
       m_blockchainHeight = peerHeight;
-      logger(Logging::INFO, Logging::BRIGHT_GREEN) << "New Top Block Detected: " << peerHeight;
+      logger(Logging::INFO, Logging::BLUE) << "New Top Block Detected: " << peerHeight;
     }
   }
 

@@ -236,7 +236,7 @@ int main(int argc, char* argv[])
     // configure logging
     logManager->configure(buildLoggerConfiguration(cfgLogLevel, cfgLogFile.string()));
 
-    logger(INFO, BRIGHT_GREEN) << getProjectCLIHeader() << std::endl;
+    logger(INFO, YELLOW) << getProjectCLIHeader() << std::endl;
 
     logger(INFO) << "Program Working Directory: " << cwdPath;
 
@@ -266,7 +266,7 @@ int main(int argc, char* argv[])
        we will remove blocks until we're back at the height specified */
     if (config.rewindToHeight > 0)
     {
-      logger(INFO) << "Rewinding blockchain to: " << config.rewindToHeight << std::endl;
+      logger(INFO, YELLOW) << "Rewinding blockchain to: " << config.rewindToHeight << std::endl;
       std::unique_ptr<IMainChainStorage> mainChainStorage;
 
       if (config.useSqliteForLocalCaches)
@@ -336,7 +336,7 @@ int main(int argc, char* argv[])
     }
 
     System::Dispatcher dispatcher;
-    logger(INFO) << "Initializing core...";
+    logger(INFO, BLUE) << "Initializing core...";
 
     std::unique_ptr<IMainChainStorage> tmainChainStorage;
     if ( config.useSqliteForLocalCaches )
@@ -362,7 +362,7 @@ int main(int argc, char* argv[])
     );
 
     ccore.load();
-    logger(INFO) << "Core initialized OK";
+    logger(INFO, BLUE) << "Core initialized OK";
 
     CryptoNote::CryptoNoteProtocolHandler cprotocol(currency, dispatcher, ccore, nullptr, logManager);
     CryptoNote::NodeServer p2psrv(dispatcher, cprotocol, logManager);
@@ -370,14 +370,14 @@ int main(int argc, char* argv[])
 
     cprotocol.set_p2p_endpoint(&p2psrv);
     DaemonCommandsHandler dch(ccore, p2psrv, logManager, &rpcServer);
-    logger(INFO) << "Initializing p2p server...";
+    logger(INFO, BLUE) << "Initializing p2p server...";
     if (!p2psrv.init(netNodeConfig))
     {
       logger(ERROR, BRIGHT_RED) << "Failed to initialize p2p server.";
       return 1;
     }
 
-    logger(INFO) << "P2p server initialized OK";
+    logger(INFO, BLUE) << "P2p server initialized OK";
 
     if (!config.noConsole)
     {
@@ -390,7 +390,7 @@ int main(int argc, char* argv[])
     rpcServer.setFeeAmount(config.feeAmount);
     rpcServer.enableCors(config.enableCors);
     rpcServer.start(config.rpcInterface, config.rpcPort);
-    logger(INFO) << "Core rpc server started ok";
+    logger(INFO, BLUE) << "Core rpc server started ok";
 
     Tools::SignalHandler::install([&dch] {
        dch.exit({});
@@ -404,11 +404,11 @@ int main(int argc, char* argv[])
     dch.stop_handling();
 
     //stop components
-    logger(INFO) << "Stopping core rpc server...";
+    logger(INFO, RED) << "Stopping core rpc server...";
     rpcServer.stop();
 
     //deinitialize components
-    logger(INFO) << "Deinitializing p2p...";
+    logger(INFO, RED) << "Deinitializing p2p...";
     p2psrv.deinit();
 
     cprotocol.set_p2p_endpoint(nullptr);
@@ -421,6 +421,6 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  logger(INFO) << "Node stopped.";
+  logger(INFO, RED) << "Node stopped.";
   return 0;
 }

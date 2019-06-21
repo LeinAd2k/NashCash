@@ -369,7 +369,7 @@ std::string print_peerlist_to_string(const std::list<PeerlistEntry>& pl) {
       logger(TRACE) << "Added seed node: " << nodes.back() << " (" << host << ")";
 
     } catch (const std::exception& e) {
-      logger(ERROR, BRIGHT_YELLOW) << "Failed to resolve host name '" << host << "': " << e.what();
+      logger(ERROR, RED) << "Failed to resolve host name '" << host << "': " << e.what();
       return false;
     }
 
@@ -511,7 +511,7 @@ std::string print_peerlist_to_string(const std::list<PeerlistEntry>& pl) {
       m_payload_handler.stop();
     });
 
-    logger(INFO, BRIGHT_YELLOW) << "Stop signal sent, please only EXIT or CTRL+C one time to avoid stalling the shutdown process.";
+    logger(INFO, BLUE) << "Stop signal sent, please only EXIT or CTRL+C one time to avoid stalling the shutdown process.";
     return true;
   }
 
@@ -707,7 +707,7 @@ std::string print_peerlist_to_string(const std::list<PeerlistEntry>& pl) {
       }
 
       if (just_take_peerlist) {
-        logger(Logging::DEBUGGING, Logging::BRIGHT_GREEN) << ctx << "CONNECTION HANDSHAKED OK AND CLOSED.";
+        logger(Logging::DEBUGGING, Logging::BLUE) << ctx << "CONNECTION HANDSHAKED OK AND CLOSED.";
         return true;
       }
 
@@ -1154,7 +1154,7 @@ std::string print_peerlist_to_string(const std::list<PeerlistEntry>& pl) {
     get_local_node_data(rsp.node_data);
     m_payload_handler.get_payload_sync_data(rsp.payload_data);
 
-    logger(Logging::DEBUGGING, Logging::BRIGHT_GREEN) << "COMMAND_HANDSHAKE";
+    logger(Logging::DEBUGGING, Logging::BLUE) << "COMMAND_HANDSHAKE";
     return 1;
   }
   //-----------------------------------------------------------------------------------
