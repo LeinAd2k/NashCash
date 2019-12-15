@@ -1,0 +1,527 @@
+The system is: Windows - 10.0.17134 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/HostX64/x64/cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+Microsoft (R) C/C++-Optimierungscompiler Version 19.22.27905 f걊 x64
+Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+
+CMakeCCompilerId.c
+Microsoft (R) Incremental Linker Version 14.22.27905.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCCompilerId.exe 
+CMakeCCompilerId.obj 
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
+
+The C compiler identification is MSVC, found in "D:/evo/evo/out/build/x64-Debug/CMakeFiles/3.14.19060802-MSVC_2/CompilerIdC/CMakeCCompilerId.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/HostX64/x64/cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+Microsoft (R) C/C++-Optimierungscompiler Version 19.22.27905 f걊 x64
+Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+
+CMakeCXXCompilerId.cpp
+Microsoft (R) Incremental Linker Version 14.22.27905.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCXXCompilerId.exe 
+CMakeCXXCompilerId.obj 
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+
+The CXX compiler identification is MSVC, found in "D:/evo/evo/out/build/x64-Debug/CMakeFiles/3.14.19060802-MSVC_2/CompilerIdCXX/CMakeCXXCompilerId.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_95426 
+[1/2] Building C object CMakeFiles\cmTC_95426.dir\testCCompiler.c.obj
+[2/2] Linking C executable cmTC_95426.exe
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_32fbe 
+[1/2] Building C object CMakeFiles\cmTC_32fbe.dir\CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_32fbe.exe
+
+
+
+
+Detecting C [] compiler features compiled with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_8b93a 
+[1/2] Building C object CMakeFiles\cmTC_8b93a.dir\feature_tests.c.obj
+[2/2] Linking C executable cmTC_8b93a.exe
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_variadic_macros
+Determining if the CXX compiler works passed with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_17679 
+[1/2] Building CXX object CMakeFiles\cmTC_17679.dir\testCXXCompiler.cxx.obj
+[2/2] Linking CXX executable cmTC_17679.exe
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_57def 
+[1/2] Building CXX object CMakeFiles\cmTC_57def.dir\CMakeCXXCompilerABI.cpp.obj
+[2/2] Linking CXX executable cmTC_57def.exe
+
+
+
+
+Detecting CXX [] compiler features compiled with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_ce46e 
+[1/2] Building CXX object CMakeFiles\cmTC_ce46e.dir\feature_tests.cxx.obj
+[2/2] Linking CXX executable cmTC_ce46e.exe
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+Checking whether the ASM_MASM compiler is MSVC using "-?" matched "Microsoft":
+Microsoft (R) Macro Assembler (x64) Version 14.22.27905.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+        ML64 [ /options ] filelist [ /link linkoptions ]
+
+/Bl<linker> Use alternate linker          /Sf Generate first pass listing
+/c Assemble without linking               /Sl<width> Set line width
+/Cp Preserve case of user identifiers     /Sn Suppress symbol-table listing
+/Cx Preserve case in publics, externs     /Sp<length> Set page length
+/D<name>[=text] Define text macro         /Ss<string> Set subtitle
+/EP Output preprocessed listing to stdout /St<string> Set title
+/F <hex> Set stack size (bytes)           /Sx List false conditionals
+/Fe<file> Name executable                 /Ta<file> Assemble non-.ASM file
+/Fl[file] Generate listing                /w Same as /W0 /WX
+/Fm[file] Generate map                    /WX Treat warnings as errors
+/Fo<file> Name object file                /W<number> Set warning level
+/Fr[file] Generate limited browser info   /X Ignore INCLUDE environment path
+/FR[file] Generate full browser info      /Zd Add line number debug info
+/I<name> Add include path                 /Zf Make all symbols public
+/link <linker options and libraries>      /Zi Add symbolic debug info
+/nologo Suppress copyright message        /Zp[n] Set structure alignment
+/Sa Maximize source listing               /Zs Perform syntax check only
+/ZH:SHA_256 Use SHA256 for checksum
+    in debug info (experimental)
+/Gy[-] separate functions for linker
+/errorReport:<option> Report internal assembler errors to Microsoft
+    none - do not send report
+    prompt - prompt to immediately send report
+    queue - at next admin logon, prompt to send report
+    send - send report automatically
+Performing C++ SOURCE FILE Test check_cxx_compiler_flag__arch_AVX2 succeeded with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_36a0b 
+[1/2] Building CXX object CMakeFiles\cmTC_36a0b.dir\src.cxx.obj
+[2/2] Linking CXX executable cmTC_36a0b.exe
+
+Source file was:
+#include <cstdio>
+      int main() { return 0; }
+Checking whether the ASM compiler is MSVC using "-?" matched "Microsoft":
+Microsoft (R) C/C++-Optimierungscompiler Version 19.22.27905 f걊 x64
+Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+
+                         C/C++-COMPILEROPTIONEN
+
+
+                              -OPTIMIERUNG-
+
+/O1 maximale Optimierungen (Platz bevorzugen)
+/O2 maximale Optimierungen (Geschwindigkeit bevorzugen)
+/Ob<n> Inlineerweiterung (Standard: n=0)
+/Od Optimierungen deaktivieren (Standard)
+/Og Globale Optimierung aktivieren      
+/Oi[-] Systeminterne Funktionen aktivieren
+/Os Codespeicherplatz vorrangig         /Ot Codegeschwindigkeit vorrangig
+/Ox Optimierungen (Geschwindigkeit bevorzugen)
+/favor:<blend|AMD64|INTEL64|ATOM> Prozessor ausw꼑len, f걊 den optimiert werden soll. M봥liche Werte:
+    blend - Eine Kombination verschiedener Optimierungen f걊 mehrere unterschiedliche x64-Prozessoren
+    AMD64 - 64-Bit-AMD-Prozessoren                                 
+    INTEL64 - Prozessoren mit Intel(R)64-Architektur                  
+    ATOM - Intel(R) Atom(TM)-Prozessoren                           
+
+                             -CODEGENERIERUNG-
+
+/Gu[-]: Stellen Sie sicher, dass unterschiedliche Funktionen unterschiedliche Adressen aufweisen.
+/Gw[-] separate globale Variablen f걊 Linker
+/GF Schreibgesch걎ztes Stringpooling aktivieren
+/Gm[-] Minimale Neuerstellung aktivieren/Gy[-] Separate Funktionen f걊 Linker
+/GS[-] Sicherheits갶erpr갽ungen aktivieren
+/GR[-] C++-RTTI aktivieren              
+/GX[-] C++-EH aktivieren (identisch mit /EHsc)
+/guard:cf[-] CFG aktivieren (Control Flow Guard, Ablaufsteuerungsscchutz)
+/EHs C++-EH aktivieren (ohne SEH-Ausnahmen)
+/EHa C++-EH aktivieren (mit SEH-Ausnahmen)
+/EHc nothrow als Standard f걊 externes "C"
+/EHr immer noexcept-Laufzeitbeendigungspr갽ungen generieren
+/fp:<except[-]|fast|precise|strict> Gleitkommamodell w꼑len:
+    except[-] - Gleitkommaausnahmen beim Generieren von Code ber갷ksichtigen
+    fast: "Schnelles" Gleitkommamodell mit weniger vorhersehbaren Ergebnissen
+    precise - "Pr꼣ises" Gleitkommamodell; Ergebnisse sind vorhersehbar.
+    strict - "Striktes" Gleitkommamodell (impliziert /fp:except)
+/Qfast_transcendentals generieren auch bei /fp:except systeminterne Inline-FP.
+/Qspectre[-] Entsch꼛fungen f걊 CVE 2017-5753 aktivieren
+/Qpar[-] parallele Codegenerierung aktivieren
+/Qpar-report:1 automatische Parallelisierungsdiagnose; parallelisierte Schleifen anzeigen
+/Qpar-report:2 automatische Parallelisierungsdiagnose; nicht parallelisierte Schleifen anzeigen
+/Qvec-report:1 automatische Vektorisierungsdiagnose; vektorisierte Schleifen anzeigen
+/Qvec-report:2 automatische Vektorisierungsdiagnose; nicht vektorisierte Schleifen anzeigen
+/GL[-] Link-Zeitcodegenerierung aktivieren
+/volatile:<iso|ms> fl갷htiges Modell ausw꼑len:
+    iso - Acquire-/release-Semantik bei fl갷htigen Zugriffen nicht garantiert
+    ms  - Acquire-/release-Semantik bei fl갷htigen Zugriffen garantiert
+/GA F걊 Windows-Anwendung optimieren    
+/Ge Stapel갶erpr갽ung f걊 alle Funktionen erzwingen
+/Gs[num] Stapel갶erpr갽ungsaufrufe kontrollieren
+/Gh _penter-Funktionsaufruf aktivieren  /GH _pexit-Funktionsaufruf aktivieren
+/GT Fiber-sichere TLS-Zugriffe generieren
+/RTC1 Schnelle 쉇erpr갽ungen aktivieren (/RTCsu)
+/RTCc Konvertierung f걊 kleinere Typen갶erpr갽ungen
+/RTCs Stapelrahmen-Laufzeit갶erpr갽ung  
+/RTCu Nicht initialisierte lokale Syntax갶erpr갽ungen
+/clr[:Option] F걊 Common Language Runtime kompilieren; zul꼜sige Optionen sind:
+    pure - Reine IL-Ausgabedatei erzeugen (kein systemeigener ausf갿rbarer Code)
+    safe - Reine, 갶erpr갽bare IL-Ausgabedatei erzeugen
+    noAssembly - Keine Assembly erzeugen
+    nostdlib - .NET Framework-Systemverzeichnis beim Suchen nach Assemblys ignorieren
+    nostdimport - erforderliche Assemblys nicht implizit importieren
+    initialAppDomain - Urspr걆gliches AppDomain-Verhalten von Visual C++ 2002 aktivieren
+/homeparams Schreiben von an die Register 갶ergebenen Parametern in den Stapel erzwingen
+/GZ Stapel갶erpr갽ungen aktivieren (/RTCs)
+/Gv __vectorcall calling convention     
+/arch:<AVX|AVX2|AVX512> Mindestanforderungen an die CPU-Architektur. M봥liche Werte:
+   AVX - Verwendung der f걊 AVX-f꼑ige CPUs verf갾baren Anweisungen aktivieren
+   AVX2 - Verwendung der f걊 AVX2-f꼑ige CPUs verf갾baren Anweisungen aktivieren
+   AVX512 - Verwendung der f걊 AVX-512-f꼑ige CPUs verf갾baren Anweisungen aktivieren
+
+                              -AUSGABEDATEIEN-
+
+/Fa[Datei] Name der Assemblylistingdatei/FA[scu] Assemblyliste konfigurieren
+/Fd[Datei] Name der PDB-Datei           /Fe<Datei> Name der ausf갿rbaren Datei
+/Fm[file] Name der Zuordnungsdatei      /Fo<file> Name der Objektdatei
+/Fp<Datei> Name der vorkompilierten Headerdatei
+/Fr[Datei] Name der Quellbrowserdatei   
+/FR[Datei ] Name der erweiterten SBR-Datei
+/Fi[file] Vorverarbeitete Datei benennen/Fd: <Datei> Name der PDB-Datei
+/Fe: <Datei> Name der ausf갿rbaren Datei/Fm: <Datei> Name der Zuordnungsdatei
+/Fo: <Datei> Name der Objektdatei       /Fp: <Datei> Name der PCH-Datei
+/FR: <Datei> Name der erweiterten SBR-Datei
+/Fi: <Datei> Vorverarbeitete Datei benennen
+/doc[Datei] XML-Dokumentationskommentare verarbeiten und optional die XDC-Datei benennen
+
+                              -PR랶ROZESSOR-
+
+/AI<Verz> Zu Assemblysuchpfad hinzuf갾en
+/FU<Datei> Assembly/Modul, deren/dessen Verwendung erzwungen wird 
+/C Kommentare nicht entfernen           /D<name>{=|#}<text> Makro definieren
+/E In stdout vorverarbeiten             /EP In stdout vorverarbeiten, kein #line
+/P In Datei vorverarbeiten              
+/Fx Eingef갾ten Code in Datei zusammenf갿ren
+/FI<Datei> Name der Datei, deren Einschluss erzwungen wird
+/U<name> Vordefiniertes Makro entfernen /u Alle vordefinierten Makros entfernen
+/I<dir> Zu Include-Suchpfad hinzuf갾en  /X Standardspeicherorte ignorieren
+/PH generiert #pragma file_hash bei der Vorbearbeitung
+
+                                -PROGRAMMIERSPRACHE-
+
+/std:<c++14|c++17|c++latest>: C++-Standardversion
+    c++14: ISO/IEC 14882:2014 (Standardwert)
+    c++17: ISO/IEC 14882:2017
+    c++latest: Aktueller Entwurfsstandard (럑derungen der Featuresammlung vorbehalten)
+/permissive[-] Nicht konformen Code f걊 die Kompilierung zulassen (럑derungen der Featuresammlung vorbehalten, standardm꾞ig aktiviert)
+/Ze Erweiterungen aktivieren (Standard) /Za Erweiterungen deaktivieren
+/ZW WinRT-Spracherweiterungen aktivieren/Zs Nur Syntaxpr갽ung
+/Zc:arg1[,arg2] C++-Sprach갶ereinstimmung; folgende Argumente sind zul꼜sig:
+  forScope[-]           Standard-C++ f걊 Bereichsregeln erzwingen
+  wchar_t[-]            wchar_t ist der native Typ, nicht typedef
+  auto[-]               Neue C++-Standardbedeutung f걊 "auto" erzwingen
+  trigraphs[-]          Trigraphen aktivieren (standardm꾞ig deaktiviert)
+  rvalueCast[-]         Standard-C++ f걊 explizite Typenkonvertierungsregeln erzwingen
+  strictStrings[-]      Konvertierung von Zeichenfolgenliteral zu [char|wchar_t]*
+                        deaktivieren (standardm꾞ig deaktiviert)
+  implicitNoexcept[-]   Implizites "noexcept" f걊 erforderliche Funktionen aktivieren
+  threadSafeInit[-]     Thread-sichere lokale statische Initialisierung aktivieren
+  inline[-]             remove unreferenced function or data if it is
+                        COMDAT or has internal linkage only (off by default)
+  sizedDealloc[-]       enable C++14 global sized deallocation
+                        functions (on by default)
+  throwingNew[-]        Annehmen, dass der new-Operator bei einem Fehler ausgel봲t wird (standardm꾞ig deaktiviert)
+  referenceBinding[-]   Ein tempor꼛es Element wird nicht an einen nicht konstanten
+                        lvalue-Verweis gebunden(standardm꾞ig deaktiviert)
+  twoPhase-             Zweiphasen-Namenssuche deaktivieren
+  ternary[-]            C++11-Standardregeln f걊 Bedingungsoperator erzwingen (standardm꾞ig deaktiviert)
+  noexceptTypes[-]      C++17-noexcept-Regeln erzwingen (standardm꾞ig aktiviert in C++17 und h봦er)
+  alignedNew[-]         C++17-Ausrichtung dynamisch zugeordneter Objekte aktivieren (standardm꾞ig aktiviert)
+/await Erweiterung der fortsetzbaren Funktionen aktivieren 
+/constexpr:depth<N>     Grenzwert f걊 die Rekursionstiefe f걊 constexpr-Auswertung (Standardwert: 512)
+/constexpr:backtrace<N> N constexpr-Auswertungen in der Diagnose anzeigen (Standardwert: 10)
+/constexpr:steps<N>     constexpr-Auswertung nach N Schritten beenden (Standardwert: 100.000)
+/Zi Debuginformationen aktivieren       
+/Z7 Debuginformationen nach altem Stil aktivieren
+/Zo[-] Umfangreichere Debuginformationen f걊 optimierten Code generieren (standardm꾞ig aktiviert)
+/ZH:SHA_256             SHA256 f걊 die Dateipr갽summe in den Debuginformationen verwenden (experimentell)
+/Zp[n] Strukturen an n-Byte-Grenze packen
+/Zl Kein Standardbibliotheksname in OBJ-Datei
+/vd{0|1|2} vtordisp deaktivieren/aktivieren
+/vm<x> Typ von Memberzeigern            
+/ZI Debuginformationen f걊 Bearbeiten und Fortfahren aktivieren
+/openmp OpenMP 2.0-Spracherweiterungen aktivieren
+/openmp: experimentelles Aktivieren der OpenMP 2.0-Spracherweiterungen und der ausgew꼑lten OpenMP 3.0 +-Spracherweiterungen
+
+                              -VERSCHIEDENES-
+
+@<Datei> Optionsantwortdatei            /?, /help Diese Hilfemeldung anzeigen
+/bigobj Erweitertes Objektformat generieren
+/c Nur kompilieren, nicht verkn걈fen    
+/errorReport:Option Interne Compilerfehler an Microsoft melden
+    none - Keinen Bericht senden                
+    prompt - Zum sofortigen Senden des Berichts auffordern
+    queue - Bei n꼊hster Administratoranmeldung zum Senden des Berichts auffordern (Standard)
+    send - Bericht automatisch senden         
+/FC Bei Diagnose volle Pfadnamen verwenden
+/H<num> Maximale L꼗ge externer Namen   /J Standardzeichentyp ist "unsigned"
+"/MP[n]" verwendet f걊 die Kompilierung bis zu "n" Prozesse.
+/nologo Copyright-Meldung unterdr갷ken  /showIncludes Includedateinamen anzeigen
+/Tc<Quelldatei> Datei als .c-Datei kompilieren
+/Tp<Quelldatei> Datei als .cpp-Datei kompilieren
+/TC Alle Dateien als .c-Datei kompilieren
+/TP Alle Dateien als .cpp-Datei kompilieren
+/V<Zeichenfolge> Versionszeichenfolge festlegen
+/Yc[Datei] PCH-Datei erstellen          
+/Yd Debuginformationen in jeder OBJ-Datei ablegen
+/Yl[sym] PCH-Verweis f걊 Debugbibliothek einf갾en
+/Yu[Datei] PCH-Datei verwenden          /Y- Alle PCH-Optionen deaktivieren
+/Zm<n> Maximale Speicherzuweisung (% vom Standard)
+mit /FS die Verwendung von MSPDBSRV.EXE erzwingen
+/source-charset:<iana-name>|.nnnn: Festlegen des Quellzeichensatzes.
+/execution-charset:<iana-name>|.nnnn: Festlegen des Ausf갿rungszeichensatzes.
+/UTF-8: Festlegen des Quell- und Ausf갿rungszeichensatzes auf UTF-8.
+/validate-charset[-]: 쉇erpr갽en der UTF-8-Dateien auf zul꼜sige Zeichen.
+/fastfail[-]: fast-fail-Modus aktivieren
+/JMC[-] Nur eigenen Code nativ aktivieren
+
+                                -VERKN숻FEN-
+
+/LD .DLL erstellen                      /LDd .DLL-Debugbibliothek erstellen
+/LN NETMODULE erstellen                 /F<num> Stapelgr붳e festlegen
+/link [Linkeroptionen und -bibliotheken]/MD Mit "MSVCRT.LIB" verkn걈fen
+/MT Mit "LIBCMT.LIB" verkn걈fen         
+/MDd Mit Debugbibliothek "MSVCRTD.LIB" verkn걈fen
+/MTd Mit Debugbibliothek "LIBCMTD.LIB" verkn걈fen
+
+                              -CODEANALYSE-
+
+/analyze[-] Systemeigene Analyse aktivieren
+/analyze:quiet[-] Keine Warnung an Konsole
+/analyze:log<Name> Warnungen an Datei   
+/analyze:autolog protokollieren in *.pftlog
+/analyze:autolog:ext<ext> In *. protokollieren<ext>
+/analyze:autolog- Keine Protokolldatei  
+/analyze:WX- Warnungen nicht schwerwiegend
+/analyze:stacksize<num> Max. Stapelrahmen
+/analyze:max_paths<num> Max. Pfade      /analyze:Nur Analyse, keine Codegen.
+
+                              -DIAGNOSE-
+
+/diagnostics:<args,...> Steuert das Format von Diagnosemeldungen:
+             classic: Beh꼕t das vorherige Format bei.
+             column[-]: Gibt Spalteninformationen aus.
+             caret[-]: Gibt die Spalte und die angegebene Quellcodezeile aus.
+/Wall Alle Warnungen deaktivieren       /w   Alle Warnungen deaktivieren
+/W<n> Warnstufe festlegen (Standard: n=1)
+/Wv:xx[.yy[.zzzzz]] Nach Version xx.yy.zzzzz eingef갿rte Warnungen deaktivieren
+/WX Warnungen als Fehler behandeln      /WL Einzeilige Diagnose aktivieren
+/wd<n> Warnung n deaktivieren           /we<n> Warnung n als Fehler behandeln
+/wo<n> Warnung n einmal ausgeben        /w<l><n> Warnstufe 1-4 f걊 n festlegen
+/external:I <Pfad>:      Speicherort f걊 externe Header
+/external:env:<var>:     Umgebungsvariable mit Speicherorten f걊 externe Header
+/external:anglebrackets: Alle Header, die 갶er <> eingeschlossen werden, als extern behandeln
+/external:W<n>:          Warnstufe f걊 externe Header
+/external:templates[-]: Warnstufe in der gesamten Vorlageninstanziierungskette auswerten
+/sdl zus꼝zliche Sicherheitsfunktionen und Warnungen aktivieren
+
+Performing C++ SOURCE FILE Test HAVE_SSE42 succeeded with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_43f13 
+[1/2] Building CXX object CMakeFiles\cmTC_43f13.dir\src.cxx.obj
+cl : Befehlszeile warning D9025 : "/W3" wird durch "/W4" 체berschrieben
+cl : Befehlszeile warning D9025 : "/Zi" wird durch "/ZI" 체berschrieben
+D:\evo\evo\out\build\x64-Debug\CMakeFiles\CMakeTmp\src.cxx(6): warning C4189: "x": Lokale Variable ist initialisiert aber nicht referenziert
+D:\evo\evo\out\build\x64-Debug\CMakeFiles\CMakeTmp\src.cxx(10): warning C4189: "d": Lokale Variable ist initialisiert aber nicht referenziert
+[2/2] Linking CXX executable cmTC_43f13.exe
+
+Source file was:
+
+  #include <cstdint>
+  #include <nmmintrin.h>
+  #include <wmmintrin.h>
+  int main() {
+    volatile uint32_t x = _mm_crc32_u32(0, 0);
+    const auto a = _mm_set_epi64x(0, 0);
+    const auto b = _mm_set_epi64x(0, 0);
+    const auto c = _mm_clmulepi64_si128(a, b, 0x00);
+    auto d = _mm_cvtsi128_si64(c);
+  }
+  
+Performing C++ SOURCE FILE Test HAVE_THREAD_LOCAL succeeded with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_6c6f8 
+[1/2] Building CXX object CMakeFiles\cmTC_6c6f8.dir\src.cxx.obj
+cl : Befehlszeile warning D9025 : "/W3" wird durch "/W4" 체berschrieben
+cl : Befehlszeile warning D9025 : "/Zi" wird durch "/ZI" 체berschrieben
+[2/2] Linking CXX executable cmTC_6c6f8.exe
+
+Source file was:
+
+  #if defined(_MSC_VER) && !defined(__thread)
+  #define __thread __declspec(thread)
+  #endif
+  int main() {
+    static __thread int tls;
+  }
+  
+Performing C++ SOURCE FILE Test HAVE_AVX_EXTENSIONS succeeded with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_55a74 
+[1/2] Building CXX object CMakeFiles\cmTC_55a74.dir\src.cxx.obj
+cl : Befehlszeile warning D9025 : "/W3" wird durch "/W4" 체berschrieben
+cl : Befehlszeile warning D9025 : "/Zi" wird durch "/ZI" 체berschrieben
+[2/2] Linking CXX executable cmTC_55a74.exe
+
+...and run output:
+
+Return value: 1
+Source file was:
+
+      #include <immintrin.h>
+      int main()
+      {
+        __m256 a, b, c;
+        const float src[8] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
+        float dst[8];
+        a = _mm256_loadu_ps( src );
+        b = _mm256_loadu_ps( src );
+        c = _mm256_add_ps( a, b );
+        _mm256_storeu_ps( dst, c );
+        for( int i = 0; i < 8; i++ ){
+          if( ( src[i] + src[i] ) != dst[i] ){
+            return -1;
+          }
+        }
+        return 0;
+      }
+Performing C++ SOURCE FILE Test HAVE_AVX2_EXTENSIONS succeeded with the following output:
+Change Dir: D:/evo/evo/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_c3ee5 
+[1/2] Building CXX object CMakeFiles\cmTC_c3ee5.dir\src.cxx.obj
+cl : Befehlszeile warning D9025 : "/W3" wird durch "/W4" 체berschrieben
+cl : Befehlszeile warning D9025 : "/Zi" wird durch "/ZI" 체berschrieben
+[2/2] Linking CXX executable cmTC_c3ee5.exe
+
+...and run output:
+
+Return value: 1
+Source file was:
+
+      #include <immintrin.h>
+      int main()
+      {
+        __m256i a, b, c;
+        const int src[8] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        int dst[8];
+        a =  _mm256_loadu_si256( (__m256i*)src );
+        b =  _mm256_loadu_si256( (__m256i*)src );
+        c = _mm256_add_epi32( a, b );
+        _mm256_storeu_si256( (__m256i*)dst, c );
+        for( int i = 0; i < 8; i++ ){
+          if( ( src[i] + src[i] ) != dst[i] ){
+            return -1;
+          }
+        }
+        return 0;
+      }
