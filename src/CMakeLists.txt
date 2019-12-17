@@ -196,7 +196,7 @@ set_property(TARGET CliWallet PROPERTY OUTPUT_NAME "cli-wallet")
 set_property(TARGET WalletService PROPERTY OUTPUT_NAME "nash-service")
 set_property(TARGET miner PROPERTY OUTPUT_NAME "miner")
 set_property(TARGET cryptotest PROPERTY OUTPUT_NAME "Cryptotest")
-set_property(TARGET WalletApi PROPERTY OUTPUT_NAME "wallet-api")
+set_property(TARGET wallet-api PROPERTY OUTPUT_NAME "wallet-api")
 set_property(TARGET WalletUpgrader PROPERTY OUTPUT_NAME "WalletUpgrader")
 
 # Additional make targets, can be used to build a subset of the targets
