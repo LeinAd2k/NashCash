@@ -1,8 +1,8 @@
-# Xenium
+# NashCash
 
 ## Installing
 
-We offer binary images of the latest releases [here](https://github.com/xenium-project/xenium/releases/latest)
+We offer binary images of the latest releases [here](https://github.com/nash-cash/NashCash/releases/latest)
 
 If you would like to compile yourself, read on.
 
@@ -32,7 +32,7 @@ If you are using Clang, you will need Clang 6.0 or higher. You will also need li
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 sudo apt-get update
 sudo apt-get install -y build-essential g++-8 gcc-8 git libboost-all-dev libssl1.0-dev cmake
-git clone -b master --single-branch https://github.com/xenium-project/xeniumt/xenium
+git clone -b master --single-branch https://github.com/nash-cash/NashCash
 cd xenium
 mkdir build
 cd build
@@ -44,7 +44,7 @@ The binaries will be in the `src` folder when you are complete.
 
 ```bash
 cd src
-./XeniumDaemon --version
+./NashCashd --version
 ```
 
 ##### Ubuntu, using Clang
@@ -73,7 +73,7 @@ sudo apt-get update
 sudo apt-get install aptitude -y
 sudo aptitude install -y -o Aptitude::ProblemResolver::SolutionCost='100*canceled-actions,200*removals' build-essential clang-6.0 libstdc++-7-dev git libboost-all-dev python-pip libssl1.0-dev
 sudo pip install cmake
-git clone -b master --single-branch https://github.com/xenium-project/xenium
+git clone -b master --single-branch https://github.com/nash-cash
 cd xenium
 mkdir build
 cd build
@@ -85,7 +85,7 @@ The binaries will be in the `src` folder when you are complete.
 
 ```bash
 cd src
-./XeniumDaemon --version
+./NashCashd --version
 ```
 
 ##### Generic Linux
@@ -96,7 +96,7 @@ If you want to use clang, ensure you set the environment variables `CC` and `CXX
 See the ubuntu instructions for an example.
 
 ```bash
-git clone -b master --single-branch https://github.com/xenium-project/xenium
+git clone -b master --single-branch https://github.com/nash-cash/NashCash
 cd xenium
 mkdir build
 cd build
@@ -108,7 +108,7 @@ The binaries will be in the `src` folder when you are complete.
 
 ```bash
 cd src
-./XeniumDaemon --version
+./NashCashd --version
 ```
 
 #### OSX/Apple, using Clang
@@ -124,7 +124,7 @@ cd src
 brew install --force cmake boost llvm@8 openssl
 brew link --force llvm@8
 ln -s /usr/local/opt/llvm@8 /usr/local/opt/llvm
-git clone -b master --single-branch https://github.com/xenium-project/xenium
+git clone -b master --single-branch https://github.com/nash-cash/NashCash
 cd xenium
 mkdir build
 cd build
@@ -135,7 +135,7 @@ The binaries will be in the `src` folder when you are complete.
 
 ```bash
 cd src
-./XeniumDaemon --version
+./NashCashd --version
 ```
 
 #### Windows
@@ -163,7 +163,7 @@ cd <your_xenium_directory>
 mkdir build
 cd build
 cmake -G "Visual Studio 16 2019" -A x64 .. -DBOOST_ROOT=C:/local/boost_1_69_0
-MSBuild xenium.sln /p:Configuration=Release /m:1
+MSBuild NashCash.sln /p:Configuration=Release /m:1
 ```
 
 For 32-bit:
@@ -182,7 +182,7 @@ The binaries will be in the `src/Release` folder when you are complete.
 ```cmd
 cd src
 cd Release
-XeniumDaemon.exe --version
+NashCashd.exe --version
 ```
 
 #### Thanks
@@ -197,7 +197,7 @@ Hi xenium contributor, thanks for forking and sending back Pull Requests. Extens
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero Project
 // Copyright (c) 2018-2019, The TurtleCoin Developers
-// Copyright (c) 2019, The Xenium Developers
+// Copyright (c) 2019, The NashCash Developers
 //
 // Please see the included LICENSE file for more information.
 ```
