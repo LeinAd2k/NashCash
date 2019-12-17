@@ -80,7 +80,7 @@ deploy:
     - nashcash-${TRAVIS_TAG}-${LABEL}.tar.gz
   cleanup: false
   on:
-    repo: LeinAd2k/NashCash
+    repo: Nash-Cash/NashCash
     condition: "$_DEPLOYABLE = true"
     tags: true
     all_branches: true
