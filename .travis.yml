@@ -57,7 +57,7 @@ script:
 - eval $MATRIX_EVAL
 - if [[ "$LABEL" == "aarch64" ]]; then source scripts/prep-aarch64.sh ; fi
 - mkdir build && cd build
-- cmake -DARCH=default -DCMAKE_BUILD_TYPE=Release -DSTATIC=true ..
+- cmake ..
 - make -j2
 - if [[ "$LABEL" != "aarch64" ]]; then ./src/Cryptotest ; fi
 
@@ -65,7 +65,7 @@ before_deploy:
 - if [[ "${TRAVIS_TAG}" == "" ]]; then export TRAVIS_TAG=${TRAVIS_COMMIT} ; fi
 - cd src
 - ${STRIP} NashCash*
-- rm -rf nashcash-${TRAVIS_TAG}
+- rm -rf NashCash-${TRAVIS_TAG}
 - mkdir NashCash-${TRAVIS_TAG}
 - cp NashCash* nashcash-${TRAVIS_TAG}/
 - cp ../../LICENSE nashcash-${TRAVIS_TAG}/
