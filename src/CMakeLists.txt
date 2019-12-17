@@ -185,7 +185,7 @@ add_dependencies(P2P version)
 add_dependencies(Rpc version)
 add_dependencies(NashCashd version)
 add_dependencies(WalletUpgrader version)
-add_dependencies(WalletApi version)
+add_dependencies(wallet-api version)
 add_dependencies(WalletService version)
 add_dependencies(CliWallet-deprecated version)
 
