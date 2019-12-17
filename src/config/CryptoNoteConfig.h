@@ -22,7 +22,7 @@ namespace CryptoNote
         const uint64_t DIFFICULTY_TARGET                        =                               60; // seconds
 
         // MONEY_SUPPLY - total number coins to be generated
-        const uint64_t MONEY_SUPPLY                             = UINT64_C(4800000000000000); // 48 mil / 8 decimals
+        const uint64_t MONEY_SUPPLY                             =       UINT64_C(4800000000000000); // 48 mil / 8 decimals
 
         const uint32_t CRYPTONOTE_MAX_BLOCK_NUMBER              =                      500'000'000;
         const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE           =                      500'000'000;
@@ -35,18 +35,18 @@ namespace CryptoNote
         const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW        =                               60;
         const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW_V3     =                               11;
 
-        const uint32_t ZAWY_DIFFICULTY_BLOCK_INDEX              =                            1'000;
-        const size_t   ZAWY_DIFFICULTY_V2                       =                                0;
-        const uint8_t  ZAWY_DIFFICULTY_DIFFICULTY_BLOCK_VERSION =                                3;
+        const uint32_t ZAWY_DIFFICULTY_BLOCK_INDEX                   = 187000;
+        const size_t   ZAWY_DIFFICULTY_V2                            = 0;
+        const uint8_t  ZAWY_DIFFICULTY_DIFFICULTY_BLOCK_VERSION      = 3;
 
-        const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX            =                          100'000;
-        const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX_V2         =                          200'000;
-        const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX_V3         =                          500'000;
+        const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX                 = 620000;
+        const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX_V2              = 700000;
+        const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX_V3              = 800000;
 
         const unsigned EMISSION_SPEED_FACTOR                    =                               22;
         static_assert(EMISSION_SPEED_FACTOR <= 8 * sizeof(uint64_t), "Bad EMISSION_SPEED_FACTOR");
 
-        const uint64_t GENESIS_BLOCK_REWARD                     =         UINT64_C(0);
+        const uint64_t GENESIS_BLOCK_REWARD                     =                       UINT64_C(0);
       
 
         const char     GENESIS_COINBASE_TX_HEX[] = "013c01ff00018080f8abeb916d02472027e29e23b38bb7ccba8624d38042774077d3bd5c8344b9f1fdd8c06dd96d2101b879922869a402d69450454ace19d648f44ccc148236d5e4362cf0c726655ecb";
@@ -56,36 +56,36 @@ namespace CryptoNote
         /* This is the unix timestamp of the first "mined" block (technically block 2, not the genesis block)
            You can get this value by doing "print_block 2" in NashCashd. It is used to know what timestamp
            to import from when the block height cannot be found in the node or the node is offline. */
-        const uint64_t GENESIS_BLOCK_TIMESTAMP                           =                                1512800692;
-        const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW                   =                                       100;
+        const uint64_t GENESIS_BLOCK_TIMESTAMP                       =                                1512800692;
+        const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW               =    100;
         const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 100000; //size of block (bytes) after which reward for block calculated using block size
-        const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2  = 20000;
-        const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1  = 10000;
+        const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2  =  20000;
+        const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1  =  10000;
         const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE;
         const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE            =                                       600;
 
         const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT                  =                                         8;
-        const uint64_t MINIMUM_FEE                                       =                             UINT64_C(10);
+        const uint64_t MINIMUM_FEE                                       =                              UINT64_C(10);
 
         /* This section defines our minimum and maximum mixin counts required for transactions */
-        const uint64_t MINIMUM_MIXIN_V1                        =                                      0;
-        const uint64_t MAXIMUM_MIXIN_V1                        =                                     10;
+        const uint64_t MINIMUM_MIXIN_V1                        =                                       0;
+        const uint64_t MAXIMUM_MIXIN_V1                        =                                     100;
 
-        const uint64_t MINIMUM_MIXIN_V2                        =                                      0;
-        const uint64_t MAXIMUM_MIXIN_V2                        =                                      5;
+        const uint64_t MINIMUM_MIXIN_V2                        =                                      7;
+        const uint64_t MAXIMUM_MIXIN_V2                        =                                      7;
 
-        const uint64_t MINIMUM_MIXIN_V3                        =                                      2;
-        const uint64_t MAXIMUM_MIXIN_V3                        =                                      2;
+        const uint64_t MINIMUM_MIXIN_V3                        =                                      3;
+        const uint64_t MAXIMUM_MIXIN_V3                        =                                      3;
 
         /* The heights to activate the mixin limits at */
-        const uint32_t MIXIN_LIMITS_V1_HEIGHT                  =                                 10'000;
-        const uint32_t MIXIN_LIMITS_V2_HEIGHT                  =                                200'000;
-        const uint32_t MIXIN_LIMITS_V3_HEIGHT                  =                                500'000;
+        const uint32_t MIXIN_LIMITS_V1_HEIGHT				   =								 440000;
+        const uint32_t MIXIN_LIMITS_V2_HEIGHT				   =								 620000;
+        const uint32_t MIXIN_LIMITS_V3_HEIGHT				   =								 800000;
 
-        const uint64_t DEFAULT_MIXIN_V0                        =                                      0;
-        const uint64_t DEFAULT_MIXIN_V1                        =                                      1;
-        const uint64_t DEFAULT_MIXIN_V2                        =                                      3;
-        const uint64_t DEFAULT_MIXIN_V3                        =                       MAXIMUM_MIXIN_V3;
+		const uint64_t DEFAULT_MIXIN_V0						   =									  3;
+        const uint64_t DEFAULT_MIXIN_V1						   =					   MAXIMUM_MIXIN_V1;
+        const uint64_t DEFAULT_MIXIN_V2						   =					   MAXIMUM_MIXIN_V2;
+        const uint64_t DEFAULT_MIXIN_V3						   =					   MAXIMUM_MIXIN_V3;
 
         const uint64_t DEFAULT_DUST_THRESHOLD                  =                           UINT64_C(10);
         const uint64_t DEFAULT_DUST_THRESHOLD_V2               =                            UINT64_C(0);
@@ -125,9 +125,9 @@ namespace CryptoNote
         /* For new projects forked from this code base, the values immediately below
            should be changed to 0 to prevent issues with transaction processing
            and other possible unexpected behavior */
-        const uint64_t TRANSACTION_SIGNATURE_COUNT_VALIDATION_HEIGHT = 0;
-        const uint64_t BLOCK_BLOB_SHUFFLE_CHECK_HEIGHT               = 0;
-        const uint64_t TRANSACTION_INPUT_BLOCKTIME_VALIDATION_HEIGHT = 0;
+        const uint64_t TRANSACTION_SIGNATURE_COUNT_VALIDATION_HEIGHT = 1400000;
+        const uint64_t BLOCK_BLOB_SHUFFLE_CHECK_HEIGHT               = 1600000;
+        const uint64_t TRANSACTION_INPUT_BLOCKTIME_VALIDATION_HEIGHT = 1600000;
 
         /* This describes how many blocks of "wiggle" room transactions have regarding
            when the outputs can be spent based on a reasonable belief that the outputs
@@ -140,11 +140,11 @@ namespace CryptoNote
         const uint64_t CRYPTONOTE_NUMBER_OF_PERIODS_TO_FORGET_TX_DELETED_FROM_POOL =                7; // CRYPTONOTE_NUMBER_OF_PERIODS_TO_FORGET_TX_DELETED_FROM_POOL * CRYPTONOTE_MEMPOOL_TX_LIVETIME = time to forget tx
 
         const size_t FUSION_TX_MAX_SIZE               =  CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT * 30 / 100;
-        const size_t FUSION_TX_MIN_INPUT_COUNT        =                                                             6;
-        const size_t FUSION_TX_MIN_IN_OUT_COUNT_RATIO =                                                             3;
+        const size_t FUSION_TX_MIN_INPUT_COUNT        =                                                            12;
+        const size_t FUSION_TX_MIN_IN_OUT_COUNT_RATIO =                                                             4;
 
-        const size_t   NORMAL_TX_MAX_OUTPUT_RATIO_V1        =                                                            10;
-        const size_t   NORMAL_TX_MAX_OUTPUT_RATIO_V1_HEIGHT =                                                        300000;
+        const size_t   NORMAL_TX_MAX_OUTPUT_RATIO_V1        =                                                      10;
+        const size_t   NORMAL_TX_MAX_OUTPUT_RATIO_V1_HEIGHT =                                                 3000000;
 
         const uint32_t UPGRADE_HEIGHT_V2                    =                 1; // Upgrade height for CN-Dark Variant 1 switch
         const uint32_t UPGRADE_HEIGHT_V3                    =                 2; // Upgrade height for CN-Dark Lite Variant 1 switch
@@ -162,22 +162,24 @@ namespace CryptoNote
 
         /* Block heights we are going to have hard forks at */
         const uint64_t FORK_HEIGHTS[] = {
-    1870000,  // 0
-    3500000,  // 1
-    4400000,  // 2
-    6200000,  // 3
-    7000000,  // 4
-    8000000,  // 5
-    10000000, // 6
-    12000000, // 7
-    13000000, // 8
-    14000000, // 9
-    16000000, // 10
-    18000000, // 11
-    20000000, // 12
-};
+            
+                    1870000,  // 0
+                    3500000,  // 1
+                    4400000,  // 2
+                    6200000,  // 3
+                    7000000,  // 4
+                    8000000,  // 5
+                    10000000, // 6
+                    12000000, // 7
+                    13000000, // 8
+                    14000000, // 9
+                    16000000, // 10
+                    18000000, // 11
+                    20000000, // 12
+                };
+
         /* MAKE SURE TO UPDATE THIS VALUE WITH EVERY MAJOR RELEASE BEFORE A FORK */
-        const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX     =                                                           9;
+        const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX     =                                                          10;
         const uint64_t FORK_HEIGHTS_SIZE                 =                sizeof(FORK_HEIGHTS) / sizeof(*FORK_HEIGHTS);
 
         /* The index in the FORK_HEIGHTS array that this version of the software will
@@ -241,7 +243,7 @@ namespace CryptoNote
     const uint8_t  P2P_MINIMUM_VERSION                       =                5;
 
     // This defines the minimum P2P version required for lite blocks propogation
-    const uint8_t  P2P_LITE_BLOCKS_PROPOGATION_VERSION       =                1;
+    const uint8_t  P2P_LITE_BLOCKS_PROPOGATION_VERSION       =                4;
 
     // This defines the number of versions ahead we must see peers before we start displaying
     // warning messages that we need to upgrade our software.
