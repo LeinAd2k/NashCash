@@ -1,4 +1,4 @@
-**Linux64** [![Build Status](https://travis-ci.com/Nash-Cash/NashCash.svg?branch=development)](https://travis-ci.com/Nash-Cash/NashCash)
+[![Build Status](https://travis-ci.com/Nash-Cash/NashCash.svg?branch=development)](https://travis-ci.com/Nash-Cash/NashCash)
 
 # NashCash
 
