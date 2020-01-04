@@ -80,38 +80,38 @@ SubWallets::SubWallets(const SubWallets &other):
 /* CLASS FUNCTIONS */
 /////////////////////
 
-std::tuple<Error, std::string, Crypto::SecretKey, uint64_t> SubWallets::addSubWallet()
+std::tuple<Error, std::string, Crypto::SecretKey> SubWallets::addSubWallet()
 {
     /* This generates a private spend key - incompatible with view wallets */
     if (m_isViewWallet)
     {
-        return {ILLEGAL_VIEW_WALLET_OPERATION, std::string(), Crypto::SecretKey(), 0};
+        return {ILLEGAL_VIEW_WALLET_OPERATION, std::string(), Crypto::SecretKey()};
     }
-
-    Crypto::SecretKey primarySpendKey = getPrimaryPrivateSpendKey();
 
     std::scoped_lock lock(m_mutex);
 
-    /* Generate a deterministic secret spend key for the next deterministic wallet */
-    const auto [newPrivateKey, newPublicKey] = Crypto::generate_deterministic_subwallet_keys(primarySpendKey, ++m_subWalletIndexCounter);
+    CryptoNote::KeyPair spendKey;
 
-    const std::string address = Utilities::privateKeysToAddress(newPrivateKey, m_privateViewKey);
+    /* Generate a spend key */
+    Crypto::generate_keys(spendKey.publicKey, spendKey.secretKey);
+
+    const std::string address = Utilities::privateKeysToAddress(spendKey.secretKey, m_privateViewKey);
 
     const bool isPrimaryAddress = false;
 
     const uint64_t scanHeight = 0;
 
-    m_subWallets[newPublicKey] = SubWallet(
-        newPublicKey,
-        newPrivateKey,
+    m_subWallets[spendKey.publicKey] = SubWallet(
+        spendKey.publicKey,
+        spendKey.secretKey,
         address,
         scanHeight,
         Utilities::getCurrentTimestampAdjusted(),
         isPrimaryAddress);
 
-    m_publicSpendKeys.push_back(newPublicKey);
+    m_publicSpendKeys.push_back(spendKey.publicKey);
 
-    return {SUCCESS, address, newPrivateKey, m_subWalletIndexCounter};
+    return {SUCCESS, address, spendKey.secretKey};
 }
 
 std::tuple<Error, std::string>
@@ -146,29 +146,6 @@ std::tuple<Error, std::string>
     m_publicSpendKeys.push_back(publicSpendKey);
 
     return {SUCCESS, address};
-}
-
-std::tuple<Error, std::string>
-    SubWallets::importSubWallet(const uint64_t walletIndex, const uint64_t scanHeight)
-{
-    if (m_isViewWallet)
-    {
-        return {ILLEGAL_VIEW_WALLET_OPERATION, std::string()};
-    }
-
-    Crypto::SecretKey primarySpendKey = getPrimaryPrivateSpendKey();
-
-    /* Generate a deterministic secret spend key using the given wallet index */
-    const auto [newPrivateKey, newPublicKey] = Crypto::generate_deterministic_subwallet_keys(primarySpendKey, walletIndex);
-
-    const auto [status, address] = importSubWallet(newPrivateKey, scanHeight);
-
-    if (status == SUCCESS && walletIndex > m_subWalletIndexCounter)
-    {
-        m_subWalletIndexCounter = walletIndex;
-    }
-
-    return {status, address};
 }
 
 std::tuple<Error, std::string>
@@ -387,7 +364,7 @@ void SubWallets::addTransaction(const WalletTypes::Transaction tx)
     m_transactions.push_back(tx);
 }
 
-std::tuple<Crypto::KeyImage, Crypto::SecretKey> SubWallets::getTxInputKeyImage(
+Crypto::KeyImage SubWallets::getTxInputKeyImage(
     const Crypto::PublicKey publicSpendKey,
     const Crypto::KeyDerivation derivation,
     const size_t outputIndex) const
@@ -783,7 +760,7 @@ Crypto::SecretKey SubWallets::getPrivateViewKey() const
     return m_privateViewKey;
 }
 
-std::tuple<Error, Crypto::SecretKey, uint64_t> SubWallets::getPrivateSpendKey(const Crypto::PublicKey publicSpendKey) const
+std::tuple<Error, Crypto::SecretKey> SubWallets::getPrivateSpendKey(const Crypto::PublicKey publicSpendKey) const
 {
     throwIfViewWallet();
 
@@ -791,10 +768,10 @@ std::tuple<Error, Crypto::SecretKey, uint64_t> SubWallets::getPrivateSpendKey(co
 
     if (it == m_subWallets.end())
     {
-        return {ADDRESS_NOT_IN_WALLET, Crypto::SecretKey(), 0};
+        return {ADDRESS_NOT_IN_WALLET, Crypto::SecretKey()};
     }
 
-    return {SUCCESS, it->second.privateSpendKey(), it->second.walletIndex()};
+    return {SUCCESS, it->second.privateSpendKey()};
 }
 
 std::unordered_set<Crypto::Hash> SubWallets::getLockedTransactionsHashes() const
@@ -966,11 +943,6 @@ void SubWallets::fromJSON(const JSONObject &j)
         m_publicSpendKeys.push_back(key);
     }
 
-    if (j.HasMember("subWalletIndexCounter"))
-    {
-        m_subWalletIndexCounter = getUint64FromJSON(j, "subWalletIndexCounter");
-    }
-
     for (const auto &x : getArrayFromJSON(j, "subWallet"))
     {
         SubWallet s;
@@ -1031,9 +1003,6 @@ void SubWallets::toJSON(rapidjson::Writer<rapidjson::StringBuffer> &writer) cons
         key.toJSON(writer);
     }
     writer.EndArray();
-
-    writer.Key("subWalletIndexCounter");
-    writer.Uint64(m_subWalletIndexCounter);
 
     writer.Key("subWallet");
     writer.StartArray();

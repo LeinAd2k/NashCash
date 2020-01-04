@@ -39,13 +39,10 @@ class SubWallets
     /////////////////////////////
 
     /* Adds a sub wallet with a random spend key */
-    std::tuple<Error, std::string, Crypto::SecretKey, uint64_t> addSubWallet();
+    std::tuple<Error, std::string, Crypto::SecretKey> addSubWallet();
 
     /* Imports a sub wallet with the given private spend key */
     std::tuple<Error, std::string> importSubWallet(const Crypto::SecretKey privateSpendKey, const uint64_t scanHeight);
-
-    /* Imports a sub wallet with the given wallet counter */
-    std::tuple<Error, std::string> importSubWallet(const uint64_t walletIndex, const uint64_t scanHeight);
 
     /* Imports a sub view only wallet with the given public spend key */
     std::tuple<Error, std::string>
@@ -72,7 +69,7 @@ class SubWallets
     /* Generates a key image using the public+private spend key of the
        subwallet. Will return an uninitialized keyimage if a view wallet
        (and must exist, but the WalletSynchronizer already checks this) */
-    std::tuple<Crypto::KeyImage, Crypto::SecretKey> getTxInputKeyImage(
+    Crypto::KeyImage getTxInputKeyImage(
         const Crypto::PublicKey publicSpendKey,
         const Crypto::KeyDerivation derivation,
         const size_t outputIndex) const;
@@ -119,8 +116,8 @@ class SubWallets
 
     Crypto::SecretKey getPrivateViewKey() const;
 
-    /* Gets the private spend key and subwallet index for the given public spend, if it exists */
-    std::tuple<Error, Crypto::SecretKey, uint64_t> getPrivateSpendKey(const Crypto::PublicKey publicSpendKey) const;
+    /* Gets the private spend key for the given public spend, if it exists */
+    std::tuple<Error, Crypto::SecretKey> getPrivateSpendKey(const Crypto::PublicKey publicSpendKey) const;
 
     std::vector<Crypto::SecretKey> getPrivateSpendKeys() const;
 
@@ -189,9 +186,6 @@ class SubWallets
     //////////////////////////////
     /* Private member variables */
     //////////////////////////////
-
-    /* The current subwallet index counter */
-    uint64_t m_subWalletIndexCounter = 0;
 
     /* The subwallets, indexed by public spend key */
     std::unordered_map<Crypto::PublicKey, SubWallet> m_subWallets;

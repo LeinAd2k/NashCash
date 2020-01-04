@@ -870,7 +870,7 @@ namespace CryptoNote
 
             if (just_take_peerlist)
             {
-                logger(Logging::DEBUGGING, Logging::BRIGHT_MAGENTA) << ctx << "CONNECTION HANDSHAKED OK AND CLOSED.";
+                logger(Logging::DEBUGGING, Logging::BRIGHT_CYAN) << ctx << "CONNECTION HANDSHAKED OK AND CLOSED.";
                 return true;
             }
 
@@ -1132,7 +1132,9 @@ namespace CryptoNote
         {
             return false;
         }
-
+        logger(Logging::TRACE) << context << "REMOTE PEERLIST: TIME_DELTA: " << delta
+                               << ", remote peerlist size=" << peerlist_.size();
+        logger(Logging::TRACE) << context << "REMOTE PEERLIST: " << print_peerlist_to_string(peerlist_);
         return m_peerlist.merge_peerlist(peerlist_);
     }
     //-----------------------------------------------------------------------------------
@@ -1453,7 +1455,7 @@ namespace CryptoNote
         get_local_node_data(rsp.node_data);
         m_payload_handler.get_payload_sync_data(rsp.payload_data);
 
-        logger(Logging::DEBUGGING, Logging::BRIGHT_MAGENTA) << "COMMAND_HANDSHAKE";
+        logger(Logging::DEBUGGING, Logging::BRIGHT_GREEN) << "COMMAND_HANDSHAKE";
         return 1;
     }
     //-----------------------------------------------------------------------------------

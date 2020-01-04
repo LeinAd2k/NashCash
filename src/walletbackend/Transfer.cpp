@@ -8,9 +8,7 @@
 
 #include <config/Constants.h>
 #include <config/WalletConfig.h>
-#include <common/Varint.h>
 #include <errors/ValidateParameters.h>
-#include <logger/Logger.h>
 #include <utilities/Addresses.h>
 #include <utilities/FormatTools.h>
 #include <utilities/Mixins.h>
@@ -28,7 +26,7 @@ namespace SendTransaction
            as the static constructors were used */
         const std::string defaultAddress = subWallets->getPrimaryAddress();
 
-        return sendFusionTransactionAdvanced(defaultMixin, {}, defaultAddress, daemon, subWallets, {});
+        return sendFusionTransactionAdvanced(defaultMixin, {}, defaultAddress, daemon, subWallets);
     }
 
     std::tuple<Error, Crypto::Hash> sendFusionTransactionAdvanced(
@@ -36,8 +34,7 @@ namespace SendTransaction
         const std::vector<std::string> addressesToTakeFrom,
         std::string destination,
         const std::shared_ptr<Nigel> daemon,
-        const std::shared_ptr<SubWallets> subWallets,
-        const std::vector<uint8_t> extraData)
+        const std::shared_ptr<SubWallets> subWallets)
     {
         if (destination == "")
         {
@@ -123,7 +120,7 @@ namespace SendTransaction
             const uint64_t unlockTime = 0;
 
             TransactionResult txResult =
-                makeTransaction(mixin, daemon, ourInputs, paymentID, destinations, subWallets, unlockTime, extraData);
+                makeTransaction(mixin, daemon, ourInputs, paymentID, destinations, subWallets, unlockTime);
 
             tx = txResult.transaction;
             transactionOutputs = txResult.outputs;
@@ -220,7 +217,7 @@ namespace SendTransaction
         const uint64_t unlockTime = 0;
 
         return sendTransactionAdvanced(
-            destinations, defaultMixin, fee, paymentID, {}, changeAddress, daemon, subWallets, unlockTime, {});
+            destinations, defaultMixin, fee, paymentID, {}, changeAddress, daemon, subWallets, unlockTime);
     }
 
     std::tuple<Error, Crypto::Hash> sendTransactionAdvanced(
@@ -232,8 +229,7 @@ namespace SendTransaction
         std::string changeAddress,
         const std::shared_ptr<Nigel> daemon,
         const std::shared_ptr<SubWallets> subWallets,
-        const uint64_t unlockTime,
-        const std::vector<uint8_t> extraData)
+        const uint64_t unlockTime)
     {
         /* Append the fee transaction, if a fee is being used */
         const auto [feeAmount, feeAddress] = daemon->nodeFee();
@@ -305,7 +301,7 @@ namespace SendTransaction
         const auto destinations = setupDestinations(addressesAndAmounts, changeRequired, changeAddress);
 
         TransactionResult txResult =
-            makeTransaction(mixin, daemon, ourInputs, paymentID, destinations, subWallets, unlockTime, extraData);
+            makeTransaction(mixin, daemon, ourInputs, paymentID, destinations, subWallets, unlockTime);
 
         if (txResult.error)
         {
@@ -459,7 +455,7 @@ namespace SendTransaction
     std::tuple<Error, Crypto::Hash>
         relayTransaction(const CryptoNote::Transaction tx, const std::shared_ptr<Nigel> daemon)
     {
-        const auto [success, connectionError, error] = daemon->sendTransaction(tx);
+        const auto [success, connectionError] = daemon->sendTransaction(tx);
 
         if (connectionError)
         {
@@ -468,7 +464,7 @@ namespace SendTransaction
 
         if (!success)
         {
-            return {Error(DAEMON_ERROR, error), Crypto::Hash()};
+            return {DAEMON_ERROR, Crypto::Hash()};
         }
 
         return {SUCCESS, getTransactionHash(tx)};
@@ -646,9 +642,8 @@ namespace SendTransaction
             obscuredInput.amount = walletAmount.input.amount;
 
             obscuredInput.ownerPublicSpendKey = walletAmount.publicSpendKey;
+
             obscuredInput.ownerPrivateSpendKey = walletAmount.privateSpendKey;
-            obscuredInput.keyImage = walletAmount.input.keyImage;
-            obscuredInput.privateEphemeral = walletAmount.input.privateEphemeral;
 
             if (mixin != 0)
             {
@@ -708,6 +703,33 @@ namespace SendTransaction
         return {SUCCESS, result};
     }
 
+    std::tuple<CryptoNote::KeyPair, Crypto::KeyImage>
+        genKeyImage(const WalletTypes::ObscuredInput input, const Crypto::SecretKey privateViewKey)
+    {
+        Crypto::KeyDerivation derivation;
+
+        /* Derive the key from the transaction public key, and our private
+           view key */
+        Crypto::generate_key_derivation(input.realTransactionPublicKey, privateViewKey, derivation);
+
+        CryptoNote::KeyPair tmpKeyPair;
+
+        /* Derive the public key of the tmp key pair */
+        Crypto::derive_public_key(
+            derivation, input.realOutputTransactionIndex, input.ownerPublicSpendKey, tmpKeyPair.publicKey);
+
+        /* Derive the secret key of the tmp key pair */
+        Crypto::derive_secret_key(
+            derivation, input.realOutputTransactionIndex, input.ownerPrivateSpendKey, tmpKeyPair.secretKey);
+
+        Crypto::KeyImage keyImage;
+
+        /* Generate the key image */
+        Crypto::generate_key_image(tmpKeyPair.publicKey, tmpKeyPair.secretKey, keyImage);
+
+        return {tmpKeyPair, keyImage};
+    }
+
     std::tuple<Error, std::vector<CryptoNote::KeyInput>, std::vector<Crypto::SecretKey>> setupInputs(
         const std::vector<WalletTypes::ObscuredInput> inputsAndFakes,
         const Crypto::SecretKey privateViewKey)
@@ -716,41 +738,21 @@ namespace SendTransaction
 
         std::vector<Crypto::SecretKey> tmpSecretKeys;
 
-        int numPregenerated = 0;
-        int numGeneratedOnDemand = 0;
-
-        for (auto input : inputsAndFakes)
-
+        for (const auto input : inputsAndFakes)
         {
+            const auto [tmpKeyPair, keyImage] = genKeyImage(input, privateViewKey);
+
+            if (tmpKeyPair.publicKey != input.outputs[input.realOutput].key)
+            {
+                return {INVALID_GENERATED_KEYIMAGE, inputs, tmpSecretKeys};
+            }
+
+            tmpSecretKeys.push_back(tmpKeyPair.secretKey);
+
             CryptoNote::KeyInput keyInput;
 
             keyInput.amount = input.amount;
-            keyInput.keyImage = input.keyImage;
-
-            if (!input.privateEphemeral)
-            {
-                Crypto::KeyDerivation derivation;
-
-                /* Derive the key from the transaction public key, and our private
-                   view key */
-                Crypto::generate_key_derivation(input.realTransactionPublicKey, privateViewKey, derivation);
-
-                Crypto::SecretKey privateEphemeral;
-
-                /* Derive the privateEphemeral */
-                Crypto::derive_secret_key(
-                    derivation, input.realOutputTransactionIndex, input.ownerPrivateSpendKey, privateEphemeral);
-
-                input.privateEphemeral = privateEphemeral;
-
-                numGeneratedOnDemand++;
-            }
-            else
-            {
-                numPregenerated++;
-            }
-
-            tmpSecretKeys.push_back(*input.privateEphemeral);
+            keyInput.keyImage = keyImage;
 
             /* Add each output index from the fake outs */
             std::transform(
@@ -779,13 +781,6 @@ namespace SendTransaction
             /* Store the key input */
             inputs.push_back(keyInput);
         }
-
-        Logger::logger.log(
-            "Generated private ephemerals for " + std::to_string(numGeneratedOnDemand) + " inputs, "
-            "used pre-generated ephemerals for " + std::to_string(numPregenerated) + " inputs.",
-            Logger::DEBUG,
-            { Logger::TRANSACTIONS }
-        );
 
         return {SUCCESS, inputs, tmpSecretKeys};
     }
@@ -990,8 +985,7 @@ namespace SendTransaction
         const std::string paymentID,
         const std::vector<WalletTypes::TransactionDestination> destinations,
         const std::shared_ptr<SubWallets> subWallets,
-        const uint64_t unlockTime,
-        const std::vector<uint8_t> extraData)
+        const uint64_t unlockTime)
     {
         /* Mix our inputs with fake ones from the network to hide who we are */
         const auto [mixinError, inputsAndFakes] = prepareRingParticipants(ourInputs, mixin, daemon);
@@ -1017,7 +1011,7 @@ namespace SendTransaction
         /* Setup the transaction outputs */
         std::tie(result.outputs, result.txKeyPair) = setupOutputs(destinations);
 
-        std::vector<uint8_t> extraNonce;
+        std::vector<uint8_t> extra;
 
         if (paymentID != "")
         {
@@ -1025,43 +1019,16 @@ namespace SendTransaction
 
             Common::podFromHex(paymentID, paymentIDBin);
 
-            /* Indicate that this is the payment UD */
-            extraNonce.push_back(Constants::TX_EXTRA_PAYMENT_ID_IDENTIFIER);
-
-            /* Write the data to the extra nonce */
-            std::copy(std::begin(paymentIDBin.data), std::end(paymentIDBin.data), std::back_inserter(extraNonce));
-        }
-
-        if (!extraData.empty())
-        {
-            /* Indicate this is arbitrary data */
-            extraNonce.push_back(Constants::TX_EXTRA_ARBITRARY_DATA_IDENTIFIER);
-
-            /* Determine the length of the data and varint encode it */
-            std::vector<uint8_t> extraDataSize = Tools::uintToVarintVector(extraData.size());
-
-            /* Write the length of the data out to extra */
-            std::copy(extraDataSize.begin(), extraDataSize.end(), std::back_inserter(extraNonce));
-
-            /* Write the data to the extra nonce */
-            std::copy(extraData.begin(), extraData.end(), std::back_inserter(extraNonce));
-        }
-
-        std::vector<uint8_t> extra;
-
-        if (!extraNonce.empty())
-        {
             /* Indicate this is the extra nonce */
             extra.push_back(Constants::TX_EXTRA_NONCE_IDENTIFIER);
 
-            /* Determine the length of the nonce data and varint encode it */
-            std::vector<uint8_t> extraNonceSize = Tools::uintToVarintVector(extraNonce.size());
+            /* Add the length of the extra nonce (PID tag + PID length == 33) */
+            extra.push_back(1 + 32);
 
-            /* Write the extra nonce length to extra */
-            std::copy(extraNonceSize.begin(), extraNonceSize.end(), std::back_inserter(extra));
+            /* Indicate this is the payment ID */
+            extra.push_back(Constants::TX_EXTRA_PAYMENT_ID_IDENTIFIER);
 
-            /* Write the data to extra */
-            std::copy(extraNonce.begin(), extraNonce.end(), std::back_inserter(extra));
+            std::copy(std::begin(paymentIDBin.data), std::end(paymentIDBin.data), std::back_inserter(extra));
         }
 
         /* Add the pub key identifier to extra */
@@ -1088,13 +1055,6 @@ namespace SendTransaction
 
         /* Pubkey, payment ID */
         setupTX.extra = extra;
-
-        if (setupTX.outputs.size() > setupTX.inputs.size() * CryptoNote::parameters::NORMAL_TX_MAX_OUTPUT_RATIO_V1)
-        {
-            result.error = OUTPUT_DECOMPOSITION;
-
-            return result;
-        }
 
         /* Fill in the transaction signatures */
         /* NOTE: Do not modify the transaction after this, or the ring signatures

@@ -12,7 +12,6 @@ namespace Logger
 {
     enum LogLevel
     {
-        TRACE = 5,
         DEBUG = 4,
         INFO = 3,
         WARNING = 2,

@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The TurtleCoin Developers
-// Copyright (c) 2019-2020, The NashCash Developers
+// Copyright (c) 2019, The CyprusCoin Developers
 //
 // Please see the included LICENSE file for more information.
 

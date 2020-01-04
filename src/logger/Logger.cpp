@@ -24,9 +24,6 @@ namespace Logger
             {
                 return "Disabled";
             }
-            case TRACE: {
-                return "Trace";
-            }
             case DEBUG:
             {
                 return "Debug";
@@ -52,14 +49,9 @@ namespace Logger
     {
         /* Convert to lower case */
         std::transform(level.begin(), level.end(), level.begin(), ::tolower);
-
         if (level == "disabled")
         {
             return DISABLED;
-        }
-        else if (level == "trace")
-        {
-            return TRACE;
         }
         else if (level == "debug")
         {

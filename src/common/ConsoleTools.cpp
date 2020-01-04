@@ -41,7 +41,7 @@ namespace Common
                 return;
             }
 
-            if (color > Color::BrightCyan)
+            if (color > Color::BrightMagenta)
             {
                 color = Color::Default;
             }

@@ -42,8 +42,7 @@ namespace CryptoNote
             EXTRA_TOO_LARGE,
             BASE_INVALID_SIGNATURES_COUNT,
             INPUT_INVALID_SIGNATURES_COUNT,
-            OUTPUT_AMOUNT_TOO_LARGE,
-            EXCESSIVE_OUTPUTS,
+            OUTPUT_AMOUNT_TOO_LARGE
         };
 
         // custom category:
@@ -124,8 +123,6 @@ namespace CryptoNote
                         return "The number of input signatures is not correct";
                     case TransactionValidationError::OUTPUT_AMOUNT_TOO_LARGE:
                         return "Transaction has output exceeding max output size";
-                    case TransactionValidationError::EXCESSIVE_OUTPUTS:
-                        return "Transaction has an excessive number of outputs for the input count";
                     default:
                         return "Unknown error";
                 }

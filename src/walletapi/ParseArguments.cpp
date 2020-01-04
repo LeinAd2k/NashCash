@@ -105,9 +105,9 @@ ApiConfig parseArguments(int argc, char **argv)
         exit(0);
     }
 
-    if (logLevel < Logger::DISABLED || logLevel > Logger::TRACE)
+    if (logLevel < Logger::DISABLED || logLevel > Logger::DEBUG)
     {
-        std::cout << "Log level must be between " << Logger::DISABLED << " and " << Logger::TRACE << "!" << std::endl;
+        std::cout << "Log level must be between " << Logger::DISABLED << " and " << Logger::DEBUG << "!" << std::endl;
         exit(1);
     }
     else

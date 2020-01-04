@@ -119,13 +119,13 @@ namespace CryptoNote
         {
             if (index % 100 == 0)
             {
-                logger(Logging::INFO, BRIGHT_CYAN) << "CHECKPOINT PASSED FOR INDEX " << index << " " << h;
+                logger(Logging::INFO, BRIGHT_GREEN) << "CHECKPOINT PASSED FOR INDEX " << index << " " << h;
             }
             return true;
         }
         else
         {
-            logger(Logging::WARNING, BRIGHT_RED) << "CHECKPOINT FAILED FOR HEIGHT " << index
+            logger(Logging::WARNING, BRIGHT_YELLOW) << "CHECKPOINT FAILED FOR HEIGHT " << index
                                                     << ". EXPECTED HASH: " << it->second << ", FETCHED HASH: " << h;
             return false;
         }

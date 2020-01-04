@@ -556,24 +556,21 @@ std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> Wallet
                we'll let the subwallet do this since we need the private spend
                key. We use the key images to detect outgoing transactions,
                and we use the transaction inputs to make transactions ourself */
-            const auto [keyImage, privateEphemeral] =
+            const Crypto::KeyImage keyImage =
                 m_subWallets->getTxInputKeyImage(derivedSpendKey, derivation, outputIndex);
 
             const uint64_t spendHeight = 0;
 
-            const WalletTypes::TransactionInput input({
-                keyImage,
-                output.amount,
-                blockHeight,
-                rawTX.transactionPublicKey,
-                outputIndex,
-                output.globalOutputIndex,
-                output.key,
-                spendHeight,
-                rawTX.unlockTime,
-                rawTX.hash,
-                privateEphemeral
-            });
+            const WalletTypes::TransactionInput input({keyImage,
+                                                       output.amount,
+                                                       blockHeight,
+                                                       rawTX.transactionPublicKey,
+                                                       outputIndex,
+                                                       output.globalOutputIndex,
+                                                       output.key,
+                                                       spendHeight,
+                                                       rawTX.unlockTime,
+                                                       rawTX.hash});
 
             inputs.emplace_back(derivedSpendKey, input);
         }
