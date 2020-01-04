@@ -60,9 +60,9 @@ namespace CryptoNote
         const uint64_t GENESIS_BLOCK_TIMESTAMP = 1512800692;
 
         const size_t CRYPTONOTE_REWARD_BLOCKS_WINDOW                        = 100;
-        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE              = 100000; // size of block (bytes) after which reward for block calculated using block size
-        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2           = 20000;
-        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1           = 10000;
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE              = 500000; // size of block (bytes) after which reward for block calculated using block size
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2           = 50000;
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1           = 25000;
         const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT      = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE;
 
         const size_t CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE                 = 600;
@@ -74,14 +74,14 @@ namespace CryptoNote
         /* This section defines our minimum and maximum mixin counts required for transactions */
         const uint64_t MINIMUM_MIXIN_V1 = 0;
         const uint64_t MAXIMUM_MIXIN_V1 = 100;
-        const uint64_t MINIMUM_MIXIN_V2 = 7;
-        const uint64_t MAXIMUM_MIXIN_V2 = 7;
-        const uint64_t MINIMUM_MIXIN_V3 = 3;
-        const uint64_t MAXIMUM_MIXIN_V3 = 3;
+        const uint64_t MINIMUM_MIXIN_V2 = 0;
+        const uint64_t MAXIMUM_MIXIN_V2 = 10;
+        const uint64_t MINIMUM_MIXIN_V3 = 0;
+        const uint64_t MAXIMUM_MIXIN_V3 = 10;
 
         /* The heights to activate the mixin limits at */
         const uint32_t MIXIN_LIMITS_V1_HEIGHT = 440000;
-        const uint32_t MIXIN_LIMITS_V2_HEIGHT = 620000;
+        const uint32_t MIXIN_LIMITS_V2_HEIGHT = 507300; //0.0.6
         const uint32_t MIXIN_LIMITS_V3_HEIGHT = 800000;
 
         /* The mixin to use by default with zedwallet and turtle-service */
