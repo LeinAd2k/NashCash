@@ -60,7 +60,8 @@ namespace CryptoNote
         const uint64_t GENESIS_BLOCK_TIMESTAMP = 1512800692;
 
         const size_t CRYPTONOTE_REWARD_BLOCKS_WINDOW                        = 100;
-        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE              = 500000; // size of block (bytes) after which reward for block calculated using block size
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE              = 100000; // size of block (bytes) after which reward for block calculated using block size
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V6           = 500000;
         const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2           = 50000;
         const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1           = 25000;
         const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT      = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE;
@@ -289,8 +290,8 @@ namespace CryptoNote
 
     const char *const SEED_NODES[] = {
                 "85.214.241.85:23888",              //strato
-                "167.86.109.135:23888"              //contabo
-              //  "3.10.163.96:23888",                //TheDev
-              //  "180.76.161.250:23888"              //Beijin
+                "167.86.109.135:23888",              //contabo
+                "3.10.163.96:23888",                //TheDev
+              / "180.76.161.250:23888"              //Beijin
         };
 } // namespace CryptoNote
