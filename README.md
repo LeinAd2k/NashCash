@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Nash-Cash/NashCash.svg?branch=development)](https://travis-ci.org/Nash-Cash/NashCash)
 # NashCash
 
 ## Installing
