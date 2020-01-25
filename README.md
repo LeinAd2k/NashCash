@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Nash-Cash/NashCash.svg?branch=development)](https://travis-ci.org/Nash-Cash/NashCash)
+[![Build Status](https://travis-ci.org/Nash-Cash/NashCash.svg?branch=development)](https://travis-ci.org/Nash-Cash/NashCash)![GitHub All Releases](https://img.shields.io/github/downloads/nash-cash/nashcash/total?style=plastic)
 # NashCash
 
 ## Installing
