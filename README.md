@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/Nash-Cash/NashCash.svg?branch=development)](https://travis-ci.org/Nash-Cash/NashCash) ![GitHub All Releases](https://img.shields.io/github/downloads/nash-cash/NashCash/total)
+![Discord](https://img.shields.io/discord/531181204955856896)
 ![Twitter Follow](https://img.shields.io/twitter/follow/TNashCash?style=plastic)
 # NashCash
 
