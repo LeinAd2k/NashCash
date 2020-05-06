@@ -119,7 +119,7 @@ namespace CryptoNote
         {
             if (index % 100 == 0)
             {
-                logger(Logging::INFO, BRIGHT_GREEN) << "CHECKPOINT PASSED FOR INDEX " << index << " " << h;
+                logger(Logging::INFO, BRIGHT_YELLOW) << "CHECKPOINT PASSED FOR INDEX " << index << " " << h;
             }
             return true;
         }
