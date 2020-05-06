@@ -4,7 +4,7 @@
 // Copyright (c) 2019-2020, The NashCash Developers
 //
 // Please see the included LICENSE file for more information.
-
+ 
 #pragma once
 
 #include <boost/uuid/uuid.hpp>
