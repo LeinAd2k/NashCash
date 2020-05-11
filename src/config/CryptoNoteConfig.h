@@ -330,8 +330,8 @@ namespace CryptoNote
 
         const char *const SEED_NODES[] = {
                 "85.214.241.85:23888",              //strato
-                "167.86.109.135:23888",              //contabo
-                "3.10.163.96:23888",                //TheDev
+                "167.86.109.135:23888",             //contabo
+                "209.126.7.47:23888",               //USA St. Louis
                 "180.76.161.250:23888"              //Beijin
         };
 } // namespace CryptoNote
