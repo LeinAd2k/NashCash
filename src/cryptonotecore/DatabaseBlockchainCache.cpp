@@ -579,7 +579,7 @@ namespace CryptoNote
 
         if (getTopBlockIndex() == 0)
         {
-            logger(Logging::DEBUGGING) << "top block index is nill, add genesis block";
+            logger(Logging::DEBUGGING) << "top block index is null, add genesis block";
             addGenesisBlock(CachedBlock(currency.genesisBlock()));
         }
     }
@@ -1188,7 +1188,7 @@ namespace CryptoNote
     bool DatabaseBlockchainCache::checkIfSpent(const Crypto::KeyImage &keyImage, uint32_t blockIndex) const
     {
         auto batch = BlockchainReadBatch().requestBlockIndexBySpentKeyImage(keyImage);
-        auto res = database.read(batch);
+        auto res = database.readThreadSafe(batch);
         if (res)
         {
             logger(Logging::ERROR) << "checkIfSpent failed, request to database failed: " << res.message();
