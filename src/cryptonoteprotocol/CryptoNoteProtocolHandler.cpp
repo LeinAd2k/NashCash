@@ -986,7 +986,7 @@ namespace CryptoNote
         if (m_synchronized.compare_exchange_strong(val_expected, true))
         {
             logger(Logging::INFO) << ENDL;
-            logger(INFO, BRIGHT_GREEN) << "===[ " + std::string(CryptoNote::CRYPTONOTE_NAME)
+            logger(INFO, BRIGHT_MAGENTA) << "===[ " + std::string(CryptoNote::CRYPTONOTE_NAME)
                                                 + " Tip! ]============================="
                                          << ENDL;
             logger(INFO, WHITE) << " Always exit " + WalletConfig::daemonName + " and " + WalletConfig::walletName
@@ -1001,7 +1001,7 @@ namespace CryptoNote
                                 << ENDL;
             logger(INFO, BRIGHT_MAGENTA) << "===================================================" << ENDL << ENDL;
 
-            logger(INFO, BLUE) << asciiArt << ENDL;
+            //logger(INFO, BLUE) << asciiArt << ENDL;
 
             m_observerManager.notify(&ICryptoNoteProtocolObserver::blockchainSynchronized, m_core.getTopBlockIndex());
         }
