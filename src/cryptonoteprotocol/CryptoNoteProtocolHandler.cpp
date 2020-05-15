@@ -352,7 +352,7 @@ namespace CryptoNote
                 ss << "You are " << std::abs(diff) << " blocks (" << days << " days) ahead ";
             }
 
-            ss << "the current peer you're connected to. Slow and steady wins the race! ";
+            ss << "the current peer you're connected to.  ";
 
             auto logLevel = Logging::TRACE;
             /* Log at different levels depending upon if we're ahead, behind, and if it's
@@ -680,7 +680,7 @@ namespace CryptoNote
             }
         }
 
-        logger(DEBUGGING, BRIGHT_CYAN) << "Local blockchain updated, new index = " << m_core.getTopBlockIndex();
+        logger(DEBUGGING, CYAN) << "Local blockchain updated, new index = " << m_core.getTopBlockIndex();
         if (!m_stop && context.m_state == CryptoNoteConnectionContext::state_synchronizing)
         {
             request_missing_objects(context, true);
@@ -986,7 +986,7 @@ namespace CryptoNote
         if (m_synchronized.compare_exchange_strong(val_expected, true))
         {
             logger(Logging::INFO) << ENDL;
-            logger(INFO, BRIGHT_MAGENTA) << "===[ " + std::string(CryptoNote::CRYPTONOTE_NAME)
+            logger(INFO, BRIGHT_GREEN) << "===[ " + std::string(CryptoNote::CRYPTONOTE_NAME)
                                                 + " Tip! ]============================="
                                          << ENDL;
             logger(INFO, WHITE) << " Always exit " + WalletConfig::daemonName + " and " + WalletConfig::walletName
@@ -1001,7 +1001,7 @@ namespace CryptoNote
                                 << ENDL;
             logger(INFO, BRIGHT_MAGENTA) << "===================================================" << ENDL << ENDL;
 
-            logger(INFO, BRIGHT_GREEN) << asciiArt << ENDL;
+            logger(INFO, BLUE) << asciiArt << ENDL;
 
             m_observerManager.notify(&ICryptoNoteProtocolObserver::blockchainSynchronized, m_core.getTopBlockIndex());
         }
@@ -1255,7 +1255,7 @@ namespace CryptoNote
             if (peerHeight > m_blockchainHeight)
             {
                 m_blockchainHeight = peerHeight;
-                logger(Logging::INFO, Logging::BRIGHT_YELLOW) << "New Top Block Detected: " << peerHeight;
+                logger(Logging::INFO, Logging::CYAN) << "New Top Block Detected: " << peerHeight;
             }
         }
 

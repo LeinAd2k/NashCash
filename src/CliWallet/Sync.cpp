@@ -3,7 +3,7 @@
 // Please see the included LICENSE file for more information.
 
 /////////////////////////////
-#include <CliWallet/Sync.h>
+#include <cliwallet/Sync.h>
 /////////////////////////////
 
 #include <common/SignalHandler.h>
@@ -11,7 +11,7 @@
 #include <iostream>
 #include <thread>
 #include <utilities/ColouredMsg.h>
-#include <CliWallet/CommandImplementations.h>
+#include <cliwallet/CommandImplementations.h>
 
 void syncWallet(const std::shared_ptr<WalletBackend> walletBackend)
 {

@@ -280,7 +280,7 @@ int main(int argc, char *argv[])
 
         logger(INFO, BRIGHT_CYAN) << getProjectCLIHeader() << std::endl;
 
-        logger(INFO) << "Program Working Directory: " << cwdPath;
+        logger(INFO, BRIGHT_YELLOW) << "Program Working Directory: " << cwdPath;
 
         // create objects and link them
         CryptoNote::CurrencyBuilder currencyBuilder(logManager);
@@ -325,14 +325,14 @@ int main(int argc, char *argv[])
 
         if (use_checkpoints)
         {
-            logger(INFO) << "Loading Checkpoints for faster initial sync...";
+            logger(INFO, GREEN) << "Loading Checkpoints for faster initial sync...";
             if (config.checkPoints == "default")
             {
                 for (const auto &cp : CryptoNote::CHECKPOINTS)
                 {
                     checkpoints.addCheckpoint(cp.index, cp.blockId);
                 }
-                logger(INFO) << "Loaded " << CryptoNote::CHECKPOINTS.size() << " default checkpoints";
+                logger(INFO, BRIGHT_GREEN) << "Loaded " << CryptoNote::CHECKPOINTS.size() << " default checkpoints";
             }
             else
             {
@@ -379,7 +379,7 @@ int main(int argc, char *argv[])
         }
 
         System::Dispatcher dispatcher;
-        logger(INFO) << "Initializing core...";
+        logger(INFO, GREEN) << "Initializing core...";
 
         std::unique_ptr<IMainChainStorage> tmainChainStorage = createSwappedMainChainStorage(config.dataDirectory, currency);
 
@@ -395,7 +395,7 @@ int main(int argc, char *argv[])
 
         ccore->load();
 
-        logger(INFO) << "Core initialized OK";
+        logger(INFO, BRIGHT_GREEN) << "Core initialized OK";
 
         const auto cprotocol = std::make_shared<CryptoNote::CryptoNoteProtocolHandler>(
             currency,

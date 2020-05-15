@@ -9,6 +9,7 @@
 #include <cryptonotecore/Mixins.h>
 #include <cryptonotecore/TransactionValidationErrors.h>
 #include <cryptonotecore/ValidateTransaction.h>
+#include <utilities/Fees.h>
 #include <utilities/Utilities.h>
 
 ValidateTransaction::ValidateTransaction(

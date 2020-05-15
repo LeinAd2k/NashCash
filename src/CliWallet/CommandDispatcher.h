@@ -5,7 +5,7 @@
 #pragma once
 
 #include <walletbackend/WalletBackend.h>
-#include <CliWallet/ParseArguments.h>
+#include <cliwallet/ParseArguments.h>
 
 bool handleCommand(
     const std::string command,

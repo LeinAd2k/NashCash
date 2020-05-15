@@ -5,7 +5,7 @@
 #include <algorithm>
 
 /////////////////////////////////
-#include <CliWallet/GetInput.h>
+#include <cliwallet/GetInput.h>
 /////////////////////////////////
 
 #include "linenoise.hpp"
@@ -17,7 +17,7 @@
 #include <utilities/Input.h>
 #include <utilities/String.h>
 #include <utilities/Utilities.h>
-#include <CliWallet/Commands.h>
+#include <cliwallet/Commands.h>
 
 /* Note: this is not portable, it only works with terminals that support ANSI
    codes (e.g., not Windows) - however! due to the way linenoise-cpp works,

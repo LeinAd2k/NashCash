@@ -6,10 +6,10 @@
 #include <config/CliHeader.h>
 #include <iostream>
 #include <utilities/ColouredMsg.h>
-#include <CliWallet/Menu.h>
-#include <CliWallet/ParseArguments.h>
-#include <CliWallet/Sync.h>
-#include <CliWallet/TransactionMonitor.h>
+#include <cliwallet/Menu.h>
+#include <cliwallet/ParseArguments.h>
+#include <cliwallet/Sync.h>
+#include <cliwallet/TransactionMonitor.h>
 
 void shutdown(
     const std::atomic<bool> &ctrl_c,
@@ -77,6 +77,25 @@ int main(int argc, char **argv)
     ZedConfig config = parseArguments(argc, argv);
 
     Logger::logger.setLogLevel(config.logLevel);
+
+    std::ofstream logFile;
+
+    if (config.loggingFilePath) {
+        logFile.open(*config.loggingFilePath, std::ios_base::app);
+    }
+
+    Logger::logger.setLogCallback([&config, &logFile](
+        const std::string prettyMessage,
+        const std::string message,
+        const Logger::LogLevel level,
+        const std::vector<Logger::LogCategory> categories) {
+
+        std::cout << prettyMessage << std::endl;
+
+        if (config.loggingFilePath) {
+            logFile << prettyMessage << std::endl;
+        }
+    });
 
     std::cout << InformationMsg(CryptoNote::getProjectCLIHeader()) << std::endl;
 

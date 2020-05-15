@@ -3,7 +3,7 @@
 // Please see the included LICENSE file for more information.
 
 ////////////////////////////////////
-#include <CliWallet/AddressBook.h>
+#include <cliwallet/AddressBook.h>
 ////////////////////////////////////
 
 #include <config/WalletConfig.h>
@@ -16,9 +16,9 @@
 #include <utilities/ColouredMsg.h>
 #include <utilities/Input.h>
 #include <utilities/String.h>
-#include <CliWallet/GetInput.h>
-#include <CliWallet/Transfer.h>
-#include <CliWallet/Utilities.h>
+#include <cliwallet/GetInput.h>
+#include <cliwallet/Transfer.h>
+#include <cliwallet/Utilities.h>
 
 const std::string getAddressBookName(const std::vector<AddressBookEntry> addressBook)
 {

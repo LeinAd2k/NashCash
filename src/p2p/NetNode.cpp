@@ -870,7 +870,7 @@ namespace CryptoNote
 
             if (just_take_peerlist)
             {
-                logger(Logging::DEBUGGING, Logging::BRIGHT_CYAN) << ctx << "CONNECTION HANDSHAKED OK AND CLOSED.";
+                logger(Logging::DEBUGGING, Logging::BRIGHT_GREEN) << ctx << "CONNECTION HANDSHAKED OK AND CLOSED.";
                 return true;
             }
 

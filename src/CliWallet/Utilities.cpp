@@ -3,7 +3,7 @@
 // Please see the included LICENSE file for more information.
 
 //////////////////////////////////
-#include <CliWallet/Utilities.h>
+#include <cliwallet/Utilities.h>
 //////////////////////////////////
 
 #include <cmath>

@@ -4,7 +4,7 @@
 // Please see the included LICENSE file for more information.
 
 ///////////////////////////////////////////////
-#include <CliWallet/CommandImplementations.h>
+#include <cliwallet/CommandImplementations.h>
 ///////////////////////////////////////////////
 
 #include <config/CryptoNoteConfig.h>
@@ -17,12 +17,12 @@
 #include <utilities/FormatTools.h>
 #include <utilities/Input.h>
 #include <utilities/String.h>
-#include <CliWallet/Commands.h>
-#include <CliWallet/GetInput.h>
-#include <CliWallet/Menu.h>
-#include <CliWallet/Open.h>
-#include <CliWallet/Sync.h>
-#include <CliWallet/Utilities.h>
+#include <cliwallet/Commands.h>
+#include <cliwallet/GetInput.h>
+#include <cliwallet/Menu.h>
+#include <cliwallet/Open.h>
+#include <cliwallet/Sync.h>
+#include <cliwallet/Utilities.h>
 
 void changePassword(const std::shared_ptr<WalletBackend> walletBackend)
 {

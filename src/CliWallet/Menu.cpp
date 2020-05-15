@@ -3,14 +3,14 @@
 // Please see the included LICENSE file for more information.
 
 /////////////////////////////
-#include <CliWallet/Menu.h>
+#include <cliwallet/Menu.h>
 /////////////////////////////
 
 #include <config/WalletConfig.h>
 #include <utilities/FormatTools.h>
-#include <CliWallet/CommandDispatcher.h>
-#include <CliWallet/Commands.h>
-#include <CliWallet/GetInput.h>
+#include <cliwallet/CommandDispatcher.h>
+#include <cliwallet/Commands.h>
+#include <cliwallet/GetInput.h>
 
 std::tuple<bool, bool, std::shared_ptr<WalletBackend>> selectionScreen(const ZedConfig &config)
 {

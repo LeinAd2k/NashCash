@@ -3,18 +3,18 @@
 // Please see the included LICENSE file for more information.
 
 //////////////////////////////////////////
-#include <CliWallet/CommandDispatcher.h>
+#include <cliwallet/CommandDispatcher.h>
 //////////////////////////////////////////
 
 #include <iostream>
 #include <utilities/ColouredMsg.h>
 #include <utilities/Input.h>
-#include <CliWallet/AddressBook.h>
-#include <CliWallet/CommandImplementations.h>
-#include <CliWallet/Fusion.h>
-#include <CliWallet/Open.h>
-#include <CliWallet/Transfer.h>
-#include <CliWallet/Utilities.h>
+#include <cliwallet/AddressBook.h>
+#include <cliwallet/CommandImplementations.h>
+#include <cliwallet/Fusion.h>
+#include <cliwallet/Open.h>
+#include <cliwallet/Transfer.h>
+#include <cliwallet/Utilities.h>
 
 bool handleCommand(
     const std::string command,

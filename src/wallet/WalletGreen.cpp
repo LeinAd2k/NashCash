@@ -42,6 +42,7 @@
 #include <utilities/Addresses.h>
 #include <utilities/ParseExtra.h>
 #include <utilities/Utilities.h>
+#include <utilities/Fees.h>
 #include <utility>
 #include <wallet/WalletErrors.h>
 #include <wallet/WalletSerializationV2.h>

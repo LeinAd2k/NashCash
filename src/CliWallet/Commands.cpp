@@ -3,7 +3,7 @@
 // Please see the included LICENSE file for more information.
 
 /////////////////////////////////
-#include <CliWallet/Commands.h>
+#include <cliwallet/Commands.h>
 /////////////////////////////////
 
 #include <config/WalletConfig.h>

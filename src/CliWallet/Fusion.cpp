@@ -3,14 +3,14 @@
 // Please see the included LICENSE file for more information.
 
 ///////////////////////////////
-#include <CliWallet/Fusion.h>
+#include <cliwallet/Fusion.h>
 ///////////////////////////////
 
 #include <iostream>
 #include <utilities/ColouredMsg.h>
 #include <utilities/FormatTools.h>
 #include <walletbackend/WalletBackend.h>
-#include <CliWallet/Utilities.h>
+#include <cliwallet/Utilities.h>
 
 void optimize(const std::shared_ptr<WalletBackend> walletBackend)
 {

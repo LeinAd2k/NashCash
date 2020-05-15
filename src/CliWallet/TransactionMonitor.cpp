@@ -3,13 +3,13 @@
 // Please see the included LICENSE file for more information.
 
 ///////////////////////////////////////////
-#include <CliWallet/TransactionMonitor.h>
+#include <cliwallet/TransactionMonitor.h>
 ///////////////////////////////////////////
 
 #include <iostream>
 #include <utilities/ColouredMsg.h>
-#include <CliWallet/CommandImplementations.h>
-#include <CliWallet/GetInput.h>
+#include <cliwallet/CommandImplementations.h>
+#include <cliwallet/GetInput.h>
 
 void TransactionMonitor::start()
 {
