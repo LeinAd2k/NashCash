@@ -1,7 +1,6 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero Project
 // Copyright (c) 2018-2020, The TurtleCoin Developers
-// Copyright (c) 2019-2020, The NashCash Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -79,9 +78,9 @@ namespace CryptoNote
 
         /* TODO: Remove? */
         const uint64_t MINIMUM_FEE              = UINT64_C(10);
-        /* Fee adjusting V1 705000 */
+        /* Fee  V1 705000 - future things or remove*/
         const uint64_t MINIMUM_FEE_V1           = UINT64_C(20000);
-        const uint64_t MINIMUM_FEE_V1_HEIGHT    = 705000;
+        const uint64_t MINIMUM_FEE_V1_HEIGHT    = 7000000;
 
         /* Fee per byte is rounded up in chunks. This helps makes estimates
          * more accurate. It's suggested to make this a power of two, to relate
@@ -89,14 +88,13 @@ namespace CryptoNote
         const uint64_t FEE_PER_BYTE_CHUNK_SIZE = 256;
 
         /* Fee to charge per byte of transaction. Will be applied in chunks, see
-         * above. This value comes out to 1.953125. We use this value instead of
-         * something like 2 because it makes for pretty resulting fees
-         * - 5 TRTL vs 5.12 TRTL. You can read this as.. the fee per chunk
-         * is 500 atomic units. The fee per byte is 500 / chunk size. */
-        const double MINIMUM_FEE_PER_BYTE_V1 = 500.00 / FEE_PER_BYTE_CHUNK_SIZE;
+         * above. This value comes out to 0,00009765625 this is one byte).
+         * the calculation is 0.1 / 1024 x 256bytes so a chunk = 0.025. A tx will
+         * between 16 - 32 chunks so fee is 0.4 - 0.8 - transaction */
+        const double MINIMUM_FEE_PER_BYTE_V1 = 0.025 / FEE_PER_BYTE_CHUNK_SIZE;
         
         /* Height for our first fee to byte change to take effect. */
-        const uint64_t MINIMUM_FEE_PER_BYTE_V1_HEIGHT = 2200000;
+        const uint64_t MINIMUM_FEE_PER_BYTE_V1_HEIGHT = 705000;
 
         /* This section defines our minimum and maximum mixin counts required for transactions */
         const uint64_t MINIMUM_MIXIN_V1 = 0;
@@ -157,7 +155,7 @@ namespace CryptoNote
 
         const uint64_t MAX_EXTRA_SIZE_V2 = 1024;
 
-        const uint64_t MAX_EXTRA_SIZE_V2_HEIGHT = 1500000;
+        const uint64_t MAX_EXTRA_SIZE_V2_HEIGHT = 705000;
 
         
         /* This is enforced on the daemon side. An output > 250 billion causes
