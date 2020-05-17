@@ -1,5 +1,4 @@
 // Copyright (c) 2018, The TurtleCoin Developers
-// Copyright (c) 2019-2020, The NashCash Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -27,7 +26,7 @@ namespace WalletConfig
     const std::string daemonName = "NashCashd";
 
     /* The name to call this wallet */
-    const std::string walletName = "cliwallet";
+    const std::string walletName = "cli-wallet";
 
     /* The name of service/walletd, the programmatic rpc interface to a
        wallet */
@@ -52,14 +51,20 @@ namespace WalletConfig
        this automatically */
     const uint16_t integratedAddressLength = standardAddressLength + ((64 * 11) / 8);
 
-    /* The default fee value to use with transactions (in ATOMIC units!) */
-    const uint64_t defaultFee = CryptoNote::parameters::MINIMUM_FEE_V1;
+        /* The default fee value to use with transactions (in ATOMIC units!) */
+    const uint64_t defaultFee = CryptoNote::parameters::MINIMUM_FEE;
 
     /* The minimum fee value to allow with transactions (in ATOMIC units!) */
-    const uint64_t minimumFee = CryptoNote::parameters::MINIMUM_FEE_V1;
+    const uint64_t minimumFee = CryptoNote::parameters::MINIMUM_FEE;
+
+    /* The default fee value to use with transactions (in ATOMIC units!) */
+    /*const uint64_t defaultFee = CryptoNote::parameters::MINIMUM_FEE_V1;
+
+    /* The minimum fee value to allow with transactions (in ATOMIC units!) */
+    /*const uint64_t minimumFee = CryptoNote::parameters::MINIMUM_FEE_V1;
 
     /* The minimum amount allowed to be sent - usually 1 (in ATOMIC units!) */
-    const uint64_t minimumSend = 20000;
+    const uint64_t minimumSend = 10000;
 
     /* Is a mixin of zero disabled on your network? */
     const bool mixinZeroDisabled = true;
