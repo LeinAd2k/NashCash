@@ -91,7 +91,7 @@ namespace CryptoNote
          * above. This value comes out to 0,00009765625 this is one byte).
          * the calculation is 0.1 / 1024 x 256bytes so a chunk = 0.025. A tx will
          * between 16 - 32 chunks so fee is 0.4 - 0.8 - transaction */
-        const double MINIMUM_FEE_PER_BYTE_V1 = 0.025 / FEE_PER_BYTE_CHUNK_SIZE;
+        const double MINIMUM_FEE_PER_BYTE_V1 = 2500000 / FEE_PER_BYTE_CHUNK_SIZE; //atomic
         
         /* Height for our first fee to byte change to take effect. */
         const uint64_t MINIMUM_FEE_PER_BYTE_V1_HEIGHT = 705000;
