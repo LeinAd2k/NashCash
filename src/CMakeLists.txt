@@ -36,14 +36,14 @@ file(GLOB_RECURSE Rpc rpc/*)
 file(GLOB_RECURSE Serialization serialization/*)
 file(GLOB_RECURSE SubWallets subwallets/*)
 file(GLOB_RECURSE Transfers transfers/*)
-file(GLOB_RECURSE TurtleCoind daemon/*)
+file(GLOB_RECURSE NashCashd daemon/*)
 file(GLOB_RECURSE Utilities utilities/*)
 file(GLOB_RECURSE Wallet wallet/*)
 file(GLOB_RECURSE WalletApi walletapi/*)
 file(GLOB_RECURSE WalletBackend walletbackend/*)
 file(GLOB_RECURSE WalletService walletservice/*)
 file(GLOB_RECURSE WalletUpgrader walletupgrader/*)
-file(GLOB_RECURSE zedwallet++ zedwallet++/*)
+file(GLOB_RECURSE cliwallet cliwallet/*)
 
 if (MSVC)
     file(GLOB_RECURSE System system/* platform/windows/system/*)
@@ -54,7 +54,7 @@ else ()
 endif ()
 
 # Group the files together in IDEs
-source_group("" FILES $${Common} ${Config} ${Crypto} ${CryptoNoteCore} ${CryptoNoteProtocol} ${TurtleCoind} ${JsonRpcServer} ${Http} ${Logging} ${Logger} ${miner} ${Mnemonics} ${Nigel} ${NodeRpcProxy} ${P2p} ${Rpc} ${Serialization} ${System} ${Transfers} ${Wallet} ${WalletApi} ${WalletBackend} ${WalletService} ${zedwallet++} ${CryptoTest} ${Errors} ${Utilities} ${WalletUpgrader} ${SubWallets})
+source_group("" FILES $${Common} ${Config} ${Crypto} ${CryptoNoteCore} ${CryptoNoteProtocol} ${NashCashd} ${JsonRpcServer} ${Http} ${Logging} ${Logger} ${miner} ${Mnemonics} ${Nigel} ${NodeRpcProxy} ${P2p} ${Rpc} ${Serialization} ${System} ${Transfers} ${Wallet} ${WalletApi} ${WalletBackend} ${WalletService} ${cliwallet} ${CryptoTest} ${Errors} ${Utilities} ${WalletUpgrader} ${SubWallets})
 
 # Define a group of files as a library to link against
 add_library(Common STATIC ${Common})
@@ -84,7 +84,7 @@ if (MSVC)
             binaryinfo/daemon.rc
             )
     set(ZED_WALLET_SOURCES_OS
-            binaryinfo/zedwallet.rc
+            binaryinfo/cliwallet.rc
             )
     set(MINER_SOURCES_OS
             binaryinfo/miner.rc
@@ -106,16 +106,16 @@ endif ()
 add_executable(cryptotest ${CryptoTest} ${CT_SOURCES_OS})
 add_executable(miner ${miner} ${MINER_SOURCES_OS})
 add_executable(WalletService ${WalletService} ${PG_SOURCES_OS})
-add_executable(TurtleCoind ${TurtleCoind} ${DAEMON_SOURCES_OS})
+add_executable(NashCashd ${NashCashd} ${DAEMON_SOURCES_OS})
 add_executable(WalletApi ${WalletApi} ${WALLET_API_SOURCES_OS})
 add_executable(WalletUpgrader ${WalletUpgrader} ${WALLET_UPGRADER_SOURCES_OS})
-add_executable(zedwallet++ ${zedwallet++} ${ZED_WALLET_SOURCES_OS})
+add_executable(cliwallet ${cliwallet} ${ZED_WALLET_SOURCES_OS})
 
 if (MSVC)
     target_link_libraries(System ws2_32)
-    target_link_libraries(TurtleCoind Rpcrt4 ws2_32 advapi32 crypt32 gdi32 user32)
+    target_link_libraries(NashCashd Rpcrt4 ws2_32 advapi32 crypt32 gdi32 user32)
     target_link_libraries(WalletService Rpcrt4 ws2_32 advapi32 crypt32 gdi32 user32)
-    target_link_libraries(zedwallet++ ws2_32 advapi32 crypt32 gdi32 user32)
+    target_link_libraries(cliwallet ws2_32 advapi32 crypt32 gdi32 user32)
     target_link_libraries(WalletApi ws2_32 advapi32 crypt32 gdi32 user32)
     target_link_libraries(miner ws2_32 advapi32 crypt32 gdi32 user32)
     target_link_libraries(WalletUpgrader ws2_32 advapi32 crypt32 gdi32 user32)
@@ -133,9 +133,9 @@ elseif (UNIX)
 endif ()
 
 if (MSVC)
-    target_link_libraries(TurtleCoind System CryptoNoteCore rocksdb zstd lz4 Errors ${Boost_LIBRARIES})
+    target_link_libraries(NashCashd System CryptoNoteCore rocksdb zstd lz4 Errors ${Boost_LIBRARIES})
 else ()
-    target_link_libraries(TurtleCoind System CryptoNoteCore rocksdblib zstd lz4 Errors ${Boost_LIBRARIES})
+    target_link_libraries(NashCashd System CryptoNoteCore rocksdblib zstd lz4 Errors ${Boost_LIBRARIES})
 endif ()
 
 # Add the dependencies we need
@@ -159,15 +159,15 @@ target_link_libraries(WalletApi WalletBackend)
 target_link_libraries(WalletBackend Serialization Mnemonics Nigel cryptopp-static __filesystem Utilities SubWallets Logger Config Wallet)
 target_link_libraries(WalletService JsonRpcServer Wallet Mnemonics Errors)
 target_link_libraries(WalletUpgrader Utilities WalletBackend Common)
-target_link_libraries(zedwallet++ WalletBackend)
+target_link_libraries(cliwallet WalletBackend)
 
 if (OPENSSL_FOUND)
     target_link_libraries(miner ${OPENSSL_LIBRARIES})
     target_link_libraries(Nigel ${OPENSSL_LIBRARIES})
     target_link_libraries(WalletApi ${OPENSSL_LIBRARIES})
-    target_link_libraries(zedwallet++ ${OPENSSL_LIBRARIES})
+    target_link_libraries(cliwallet ${OPENSSL_LIBRARIES})
     target_link_libraries(WalletService ${OPENSSL_LIBRARIES})
-    target_link_libraries(TurtleCoind ${OPENSSL_LIBRARIES})
+    target_link_libraries(NashCashd ${OPENSSL_LIBRARIES})
 endif ()
 
 # Add dependencies means we have to build the latter before we build the former
@@ -178,15 +178,15 @@ add_dependencies(miner version)
 add_dependencies(JsonRpcServer version)
 add_dependencies(P2P version)
 add_dependencies(Rpc version)
-add_dependencies(TurtleCoind version)
+add_dependencies(NashCashd version)
 add_dependencies(WalletUpgrader version)
 add_dependencies(WalletApi version)
 add_dependencies(WalletService version)
-add_dependencies(zedwallet++ version)
+add_dependencies(cliwallet version)
 
 # Finally build the binaries
-set_property(TARGET TurtleCoind PROPERTY OUTPUT_NAME "NashCashd")
-set_property(TARGET zedwallet++ PROPERTY OUTPUT_NAME "wallet-cli")
+set_property(TARGET NashCashd PROPERTY OUTPUT_NAME "NashCashd")
+set_property(TARGET cliwallet PROPERTY OUTPUT_NAME "cli-wallet")
 set_property(TARGET WalletService PROPERTY OUTPUT_NAME "nash-service")
 set_property(TARGET miner PROPERTY OUTPUT_NAME "miner")
 set_property(TARGET cryptotest PROPERTY OUTPUT_NAME "cryptotest")
@@ -194,8 +194,8 @@ set_property(TARGET WalletApi PROPERTY OUTPUT_NAME "wallet-api")
 set_property(TARGET WalletUpgrader PROPERTY OUTPUT_NAME "wallet-upgrader")
 
 # Additional make targets, can be used to build a subset of the targets
-# e.g. make pool will build only TurtleCoind and service
-add_custom_target(pool DEPENDS TurtleCoind WalletService)
-add_custom_target(solominer DEPENDS TurtleCoind zedwallet++ miner)
-add_custom_target(cli DEPENDS TurtleCoind zedwallet++)
-add_custom_target(zedwallet DEPENDS zedwallet++)
+# e.g. make pool will build only NashCashd and service
+add_custom_target(pool DEPENDS NashCashd WalletService)
+add_custom_target(solominer DEPENDS NashCashd cliwallet miner)
+add_custom_target(cli DEPENDS NashCashd cliwallet)
+add_custom_target(cli-wallet DEPENDS cliwallet)

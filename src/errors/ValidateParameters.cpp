@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2019, The TurtleCoin Developers
+// Copyright (c) 2019-2020, The NashCash Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -20,6 +21,7 @@ extern "C"
 #include <regex>
 #include <utilities/Addresses.h>
 #include <utilities/Mixins.h>
+#include <utilities/Fees.h>
 #include <utilities/Utilities.h>
 
 Error validateFusionTransaction(

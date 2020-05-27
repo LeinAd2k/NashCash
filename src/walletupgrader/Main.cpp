@@ -158,7 +158,7 @@ int main(int argc, char **argv)
         {
             std::cout << SuccessMsg("Done!") << std::endl;
 
-            std::cout << InformationMsg("You can now open your wallet in proton, zedwallet-beta or wallet-api.") << std::endl;
+            std::cout << InformationMsg("You can now open your wallet in proton, cliwallet-beta or wallet-api.") << std::endl;
             break;
         }
         else
