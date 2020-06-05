@@ -21,6 +21,7 @@
 #include "cryptonotecore/DatabaseBlockchainCache.h"
 #include "cryptonotecore/DatabaseBlockchainCacheFactory.h"
 #include "cryptonotecore/MainChainStorage.h"
+#include "cryptonotecore/LevelDBWrapper.h"
 #include "cryptonotecore/RocksDBWrapper.h"
 #include "cryptonoteprotocol/CryptoNoteProtocolHandler.h"
 #include "p2p/NetNode.h"
@@ -278,9 +279,9 @@ int main(int argc, char *argv[])
             logger(oldLogLevel, logColour) << message;
         });
 
-        logger(INFO, BRIGHT_CYAN) << getProjectCLIHeader() << std::endl;
+        logger(INFO, BRIGHT_GREEN) << getProjectCLIHeader() << std::endl;
 
-        logger(INFO, BRIGHT_YELLOW) << "Program Working Directory: " << cwdPath;
+        logger(INFO) << "Program Working Directory: " << cwdPath;
 
         // create objects and link them
         CryptoNote::CurrencyBuilder currencyBuilder(logManager);
@@ -298,14 +299,15 @@ int main(int argc, char *argv[])
         }
         CryptoNote::Currency currency = currencyBuilder.currency();
 
-        DataBaseConfig dbConfig;
-        dbConfig.init(
+        DataBaseConfig dbConfig(
             config.dataDirectory,
             config.dbThreads,
             config.dbMaxOpenFiles,
             config.dbWriteBufferSizeMB,
             config.dbReadCacheSizeMB,
-            config.enableDbCompression);
+            config.dbMaxFileSizeMB,
+            config.enableDbCompression
+        );
 
         /* If we were told to rewind the blockchain to a certain height
            we will remove blocks until we're back at the height specified */
@@ -325,14 +327,14 @@ int main(int argc, char *argv[])
 
         if (use_checkpoints)
         {
-            logger(INFO, GREEN) << "Loading Checkpoints for faster initial sync...";
+            logger(INFO) << "Loading Checkpoints for faster initial sync...";
             if (config.checkPoints == "default")
             {
                 for (const auto &cp : CryptoNote::CHECKPOINTS)
                 {
                     checkpoints.addCheckpoint(cp.index, cp.blockId);
                 }
-                logger(INFO, BRIGHT_GREEN) << "Loaded " << CryptoNote::CHECKPOINTS.size() << " default checkpoints";
+                logger(INFO) << "Loaded " << CryptoNote::CHECKPOINTS.size() << " default checkpoints";
             }
             else
             {
@@ -358,28 +360,36 @@ int main(int argc, char *argv[])
             config.seedNodes,
             config.p2pResetPeerstate);
 
-        if (!Tools::create_directories_if_necessary(dbConfig.getDataDir()))
+        if (!Tools::create_directories_if_necessary(dbConfig.dataDir))
         {
-            throw std::runtime_error("Can't create directory: " + dbConfig.getDataDir());
+        throw std::runtime_error("Can't create directory: " + dbConfig.dataDir);
         }
 
-        RocksDBWrapper database(logManager);
-        database.init(dbConfig);
-        Tools::ScopeExit dbShutdownOnExit([&database]() { database.shutdown(); });
+        std::shared_ptr<IDataBase> database;
 
-        if (!DatabaseBlockchainCache::checkDBSchemeVersion(database, logManager))
+        if (config.enableLevelDB)
+        {
+            database = std::make_shared<LevelDBWrapper>(logManager); 
+        }
+        else
+        {
+            database = std::make_shared<RocksDBWrapper>(logManager); 
+        }
+
+        database->init(dbConfig);
+        Tools::ScopeExit dbShutdownOnExit([&database]() { database->shutdown(); });
+
+        if (!DatabaseBlockchainCache::checkDBSchemeVersion(*database, logManager))
         {
             dbShutdownOnExit.cancel();
-            database.shutdown();
-
-            database.destroy(dbConfig);
-
-            database.init(dbConfig);
+            database->shutdown();
+            database->destroy(dbConfig);
+            database->init(dbConfig);
             dbShutdownOnExit.resume();
         }
 
         System::Dispatcher dispatcher;
-        logger(INFO, GREEN) << "Initializing core...";
+        logger(INFO) << "Initializing core...";
 
         std::unique_ptr<IMainChainStorage> tmainChainStorage = createSwappedMainChainStorage(config.dataDirectory, currency);
 
@@ -388,14 +398,14 @@ int main(int argc, char *argv[])
             logManager,
             std::move(checkpoints),
             dispatcher,
-            std::unique_ptr<IBlockchainCacheFactory>(new DatabaseBlockchainCacheFactory(database, logger.getLogger())),
+            std::unique_ptr<IBlockchainCacheFactory>(new DatabaseBlockchainCacheFactory(*database, logger.getLogger())),
             std::move(tmainChainStorage),
             config.transactionValidationThreads
         );
 
         ccore->load();
 
-        logger(INFO, BRIGHT_GREEN) << "Core initialized OK";
+        logger(INFO) << "Core initialized OK";
 
         const auto cprotocol = std::make_shared<CryptoNote::CryptoNoteProtocolHandler>(
             currency,
@@ -411,6 +421,13 @@ int main(int argc, char *argv[])
             logManager
         );
 
+        std::string corsDomain;
+
+        /* TODO: enable cors should not be a vector */
+        if (!config.enableCors.empty()) {
+            corsDomain = config.enableCors[0];
+        }
+
         RpcMode rpcMode = RpcMode::Default;
 
         if (config.enableBlockExplorerDetailed)
@@ -425,7 +442,7 @@ int main(int argc, char *argv[])
         RpcServer rpcServer(
             config.rpcPort,
             config.rpcInterface,
-            config.enableCors,
+            corsDomain,
             config.feeAddress,
             config.feeAmount,
             rpcMode,
@@ -460,7 +477,7 @@ int main(int argc, char *argv[])
             ip = "127.0.0.1";
         }
 
-        DaemonCommandsHandler dch(*ccore, *p2psrv, logManager, ip, port);
+        DaemonCommandsHandler dch(*ccore, *p2psrv, logManager, ip, port, config);
 
         if (!config.noConsole)
         {
