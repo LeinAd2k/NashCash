@@ -14,3 +14,9 @@ src/build/
 src/cmake_install.cmake
 *.swp
 .vscode
+.Linux/
+/Linux/
+.Win64/
+/Win64/
+Linux/
+Win64/
