@@ -9,7 +9,6 @@
 #include <cryptonotecore/Mixins.h>
 #include <cryptonotecore/TransactionValidationErrors.h>
 #include <cryptonotecore/ValidateTransaction.h>
-#include <utilities/Fees.h>
 #include <utilities/Utilities.h>
 
 ValidateTransaction::ValidateTransaction(
@@ -367,6 +366,12 @@ bool ValidateTransaction::validateTransactionFee()
                 m_cachedTransaction.getTransactionBinaryArray().size(),
                 m_blockHeight
             );
+
+            validFee = fee >= minFee;
+        }
+        else if (m_blockHeight <= CryptoNote::parameters::MINIMUM_FEE_PER_BYTE_HEIGHT + 1)
+        {
+            const auto minFee = CryptoNote::parameters::MINIMUM_FEE_PER_BYTE;
 
             validFee = fee >= minFee;
         }

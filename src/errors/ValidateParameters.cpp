@@ -21,7 +21,6 @@ extern "C"
 #include <regex>
 #include <utilities/Addresses.h>
 #include <utilities/Mixins.h>
-#include <utilities/Fees.h>
 #include <utilities/Utilities.h>
 
 Error validateFusionTransaction(
@@ -247,7 +246,7 @@ Error validateAmount(
     }
 
     /* Using a fee per byte, and doesn't meet the min fee per byte requirement. */
-    if (fee.isFeePerByte && fee.feePerByte < CryptoNote::parameters::MINIMUM_FEE_PER_BYTE_V1)
+    if (fee.isFeePerByte && fee.feePerByte < CryptoNote::parameters::MINIMUM_FEE_PER_BYTE)
     {
         return FEE_TOO_SMALL;
     }
