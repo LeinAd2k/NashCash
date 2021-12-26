@@ -1,6 +1,7 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero Project
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2018-2021, The NashCash Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -339,6 +340,6 @@ namespace CryptoNote
                 "85.214.241.85:23888",              //strato
                 "167.86.109.135:23888",             //contabo
                 "209.126.7.47:23888",               //USA St. Louis
-                "180.76.161.250:23888"              //Beijin
+                "173.212.217.104:23888"             //Munich
         };
 } // namespace CryptoNote
