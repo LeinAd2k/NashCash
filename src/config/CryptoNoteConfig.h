@@ -162,7 +162,7 @@ namespace CryptoNote
          * an invalid block. */
         const uint64_t MAX_OUTPUT_SIZE_NODE                    =                 MONEY_SUPPLY /  1000000;
         const uint64_t MAX_OUTPUT_SIZE_CLIENT                  =                 MONEY_SUPPLY /  100000;
-        const uint64_t MAX_OUTPUT_SIZE_HEIGHT                  =                                 1500000;
+        const uint64_t MAX_OUTPUT_SIZE_HEIGHT                  =                                 15000000;
 
         /* For new projects forked from this code base, the values immediately below
            should be changed to 0 to prevent issues with transaction processing
